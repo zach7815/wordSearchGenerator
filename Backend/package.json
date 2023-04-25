@@ -1,0 +1,29 @@
+{
+	"name": "wordsearchgenerator",
+	"version": "1.0.0",
+	"description": "A word search generator that allows users to generate word search sheets and answer sheets",
+	"type": "module",
+	"main": "index.js",
+	"scripts": {
+		"test": "jest"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/zach7815/wordSearchGenerator.git"
+	},
+	"keywords": [
+		"2dArray",
+		"matrix",
+		"wordSearch",
+		"game"
+	],
+	"author": "Zach",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/zach7815/wordSearchGenerator/issues"
+	},
+	"homepage": "https://github.com/zach7815/wordSearchGenerator#readme",
+	"devDependencies": {
+		"jest": "^29.5.0"
+	}
+}
