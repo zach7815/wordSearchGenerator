@@ -1,4 +1,4 @@
-import { gridDifficulty, generateGrid, validateAllWords } from './index.js';
+// import { gridDifficulty, generateGrid, validateAllWords } from './index.js';
 
 const validTestWords = ['reddit', 'cream', 'apple', 'banana', 'chicken'];
 const invalidTestWords = ['red2it', 'cr3am', 'apple', 'ban5na', 'chicken'];

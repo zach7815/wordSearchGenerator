@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import Form from './form';
 
 function App() {
@@ -10,7 +11,18 @@ function App() {
 	};
 
 	const handleSave = (values) => {
-		console.log({ values });
+		const requestOptions = {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(values),
+		};
+		console.log(requestOptions);
+
+		fetch('http://localhost:3000/api/WordSearchData', requestOptions).then(
+			(result) => {
+				console.log(result);
+			},
+		);
 	};
 
 	return (
