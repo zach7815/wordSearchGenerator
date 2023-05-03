@@ -6,7 +6,7 @@ import { string, z } from 'zod';
 const schema = z.object({
 	authorName: string().min(4),
 	header: string().min(4, { message: 'please select an option' }),
-	title: string().min(4),
+	title: string().min(4).max(25),
 	difficulty: string().min(4, { message: 'please select an option' }),
 	words: string(),
 });

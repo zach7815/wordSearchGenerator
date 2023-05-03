@@ -6,11 +6,115 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="stylesheet" href="./css/styles.css" />
 		<title>Easy WordSearch</title>
+
+		<style type="text/css">
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
+
+			body {
+				display: flex;
+				flex-direction: column;
+				align-content: space-between;
+				justify-content: flex-start;
+			}
+
+			.container {
+				position: fixed;
+				border: solid black 2px;
+				border-radius: 5px;
+				margin-top: 3rem;
+				width: 80%;
+				height: 90vh;
+				left: 5rem;
+			}
+
+			h1 {
+				text-align: center;
+				margin: 1rem;
+				padding: 1rem;
+				bottom: 38.75rem;
+				z-index: 5;
+				left: 49rem;
+			}
+			h1 span {
+				border: solid black 1px;
+				border-radius: 10px;
+				padding: 1rem 2rem;
+				background-color: #fff;
+			}
+
+			main {
+				display: flex;
+				justify-content: center;
+				align-content: center;
+				margin-bottom: 6rem;
+				margin-top: 4rem;
+			}
+
+			table {
+				border: solid black 1px;
+				text-align: center;
+				table-layout: fixed;
+				width: 31rem;
+			}
+			table.noSpacing {
+				border-spacing: 0;
+				border-collapse: collapse;
+			}
+
+			.wordSearchTable {
+				text-align: center;
+				margin-top: 3rem;
+			}
+
+			caption {
+				caption-side: bottom;
+				padding: 1rem;
+			}
+			thead {
+				border-top: hidden;
+				border-left: hidden;
+				border-right: hidden;
+			}
+
+			th {
+				padding-bottom: 1rem;
+			}
+			.wordSearchMeta {
+				column-span: all;
+				text-align: center;
+			}
+
+			tr {
+				height: 5px;
+			}
+			tr:first-child {
+				border-top: solid black 1px;
+			}
+			td {
+				padding: -1rem;
+				text-align: center;
+				text-transform: capitalize;
+				font-size: 1.75rem;
+			}
+
+			.wordsTable {
+				display: flex;
+				justify-content: center;
+			}
+
+			.wordsTable table td {
+				border: hidden;
+			}
+		</style>
 	</head>
 
 	<body>
 		<div class="container">`</div>
-		<h1><span> Name wordsearch</span></h1>
+		<h1><span>Really really really long wordsearch</span></h1>
 		<main>
 			<table class="noSpacing">
 				<thead>
