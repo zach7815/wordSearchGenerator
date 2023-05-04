@@ -1,6 +1,6 @@
 const validWord = /^[a-zA-Z]+$/i;
 
-const validTestWords = ['reddit', 'cream', 'apple', 'banana', 'chicken'];
+// const wordsArray = ['reddit', 'cream', 'apple', 'banana', 'chicken'];
 export const validateAllWords = (wordsArray) => {
 	return wordsArray.every((word) => validWord.test(word));
 };
@@ -25,6 +25,7 @@ export const gridDifficulty = {
 // };
 
 export const makeGrid = (difficulty) => {
+	console.log(difficulty);
 	const { height, width } = difficulty;
 	const grid = [];
 	for (let i = 0; i < height; i++) {
@@ -45,7 +46,6 @@ const makeLettersOf = (words) => {
 };
 
 // access result with either Object.keys, entries or values
-const lettersOf = makeLettersOf(validTestWords);
 
 // placement Functions
 
@@ -72,7 +72,9 @@ const fitsMirrorDiagonal = (gridSize, startRow, startColumn, wordLength) =>
 //  Check if a letter can exist in a position
 const letterCanExistAtPosition = (grid, position, letter) => {
 	const [row, col] = position;
-	return new RegExp(`${letter}?$`).test(grid[row][col]);
+	console.log(grid);
+	const canExist = new RegExp(`${letter}?$`).test(grid[row][col]);
+	return canExist;
 };
 
 // this is Where we will need to control if the letters will be uppercase or not.
@@ -122,9 +124,8 @@ const random = (min, max) => {
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
-const placeWords = (grid, gridSize, words, letterOf) => {
+const placeWords = (grid, gridSize, words, lettersOf) => {
 	const maxAttempts = gridSize * gridSize;
-
 	for (const word of words) {
 		let attempts = 0;
 
@@ -167,18 +168,19 @@ const printGrid = (filledGrid) => {
 	return true;
 };
 
-const main = () => {
-	const longestLength = validTestWords.reduce((a, b) =>
-		a.length > b.length ? a : b,
-	).length;
+export const main = (wordsArray, gridSize) => {
+	console.log(gridSize);
+	// const longestLength = wordsArray.reduce((a, b) =>
+	// 	a.length > b.length ? a : b,
+	// ).length;
+	const lettersOf = makeLettersOf(wordsArray);
 
-	let gridSize = longestLength;
 	let grid = [];
 	let result = false;
 	do {
 		grid = makeGrid(gridSize);
 
-		result = placeWords(grid, gridSize, validTestWords, lettersOf);
+		result = placeWords(grid, gridSize, wordsArray, lettersOf);
 		gridSize++;
 	} while (!result);
 	const filledGrid = fillGrid(grid);

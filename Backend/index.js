@@ -6,6 +6,7 @@ import {
 	validateAllWords,
 	makeGrid,
 	gridDifficulty,
+	main,
 } from './wordSearchGenerator.js';
 const port = 3000;
 
@@ -27,9 +28,11 @@ app.get('/', (req, res) => {
 app.post('/api/WordSearchData', jsonParser, (req, res) => {
 	const { authorName, header, title, difficulty, words } = req.body;
 	const wordsArray = words.split(', ');
+	const gridDimensions = gridDifficulty[difficulty];
+	console.log(gridDimensions);
 
 	if (validateAllWords(wordsArray)) {
-		console.log(makeGrid(gridDifficulty[difficulty]));
+		main(wordsArray, gridDimensions);
 	}
 
 	res.send('content received');
