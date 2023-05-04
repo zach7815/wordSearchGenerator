@@ -24,11 +24,12 @@ export const gridDifficulty = {
 // 	return Array(difficulty.height).fill(Array(difficulty.width).fill(''));
 // };
 
-const makeGrid = (gridSize) => {
+export const makeGrid = (difficulty) => {
+	const { height, width } = difficulty;
 	const grid = [];
-	for (let i = 0; i < gridSize; i++) {
+	for (let i = 0; i < height; i++) {
 		grid[i] = [];
-		for (let j = 0; j < gridSize; j++) {
+		for (let j = 0; j < width; j++) {
 			grid[i][j] = '';
 		}
 	}
@@ -184,4 +185,4 @@ const main = () => {
 	return printGrid(filledGrid);
 };
 
-main();
+// main();

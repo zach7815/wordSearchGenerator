@@ -2,7 +2,11 @@ import Express from 'express';
 const app = Express();
 import bodyParser from 'body-parser';
 const jsonParser = bodyParser.json();
-const urlencodedParser = bodyParser.urlencoded({ extended: false });
+import {
+	validateAllWords,
+	makeGrid,
+	gridDifficulty,
+} from './wordSearchGenerator.js';
 const port = 3000;
 
 app.use(function (req, res, next) {
@@ -21,7 +25,13 @@ app.get('/', (req, res) => {
 });
 
 app.post('/api/WordSearchData', jsonParser, (req, res) => {
-	console.log(req.body);
+	const { authorName, header, title, difficulty, words } = req.body;
+	const wordsArray = words.split(', ');
+
+	if (validateAllWords(wordsArray)) {
+		console.log(makeGrid(gridDifficulty[difficulty]));
+	}
+
 	res.send('content received');
 });
 
