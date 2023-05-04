@@ -1,6 +1,4 @@
 const validWord = /^[a-zA-Z]+$/i;
-
-// const wordsArray = ['reddit', 'cream', 'apple', 'banana', 'chicken'];
 export const validateAllWords = (wordsArray) => {
 	return wordsArray.every((word) => validWord.test(word));
 };
@@ -20,12 +18,7 @@ export const gridDifficulty = {
 	},
 };
 
-// export const makeGrid = function (difficulty) {
-// 	return Array(difficulty.height).fill(Array(difficulty.width).fill(''));
-// };
-
 export const makeGrid = (difficulty) => {
-	console.log(difficulty);
 	const { height, width } = difficulty;
 	const grid = [];
 	for (let i = 0; i < height; i++) {
@@ -72,7 +65,6 @@ const fitsMirrorDiagonal = (gridSize, startRow, startColumn, wordLength) =>
 //  Check if a letter can exist in a position
 const letterCanExistAtPosition = (grid, position, letter) => {
 	const [row, col] = position;
-	console.log(grid);
 	const canExist = new RegExp(`${letter}?$`).test(grid[row][col]);
 	return canExist;
 };
@@ -169,10 +161,6 @@ const printGrid = (filledGrid) => {
 };
 
 export const main = (wordsArray, gridSize) => {
-	console.log(gridSize);
-	// const longestLength = wordsArray.reduce((a, b) =>
-	// 	a.length > b.length ? a : b,
-	// ).length;
 	const lettersOf = makeLettersOf(wordsArray);
 
 	let grid = [];
@@ -184,7 +172,7 @@ export const main = (wordsArray, gridSize) => {
 		gridSize++;
 	} while (!result);
 	const filledGrid = fillGrid(grid);
-	return printGrid(filledGrid);
+	return filledGrid;
 };
 
 // main();

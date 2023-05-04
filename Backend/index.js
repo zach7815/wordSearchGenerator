@@ -29,10 +29,10 @@ app.post('/api/WordSearchData', jsonParser, (req, res) => {
 	const { authorName, header, title, difficulty, words } = req.body;
 	const wordsArray = words.split(', ');
 	const gridDimensions = gridDifficulty[difficulty];
-	console.log(gridDimensions);
 
 	if (validateAllWords(wordsArray)) {
-		main(wordsArray, gridDimensions);
+		const wordSearchMatrix = main(wordsArray, gridDimensions);
+		console.log(wordSearchMatrix);
 	}
 
 	res.send('content received');
