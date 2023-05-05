@@ -71,8 +71,11 @@ const letterCanExistAtPosition = (grid, position, letter) => {
 
 // this is Where we will need to control if the letters will be uppercase or not.
 
-const insertWordIntoGrid = (grid, positions, word, lettersOf) => {
+const insertWordIntoGrid = (grid, positions, word, lettersOf = []) => {
 	const letters = lettersOf[word];
+	console.log(word);
+	// console.log(`letters Of= ${lettersOf.test}`);
+
 	letters.forEach((letter, i) => {
 		const [row, col] = positions[i];
 
@@ -88,6 +91,7 @@ const mapPositionsForWord = (
 	lettersOf,
 ) => {
 	const [row, col] = startPosition;
+
 	const indexToPosition =
 		(fitsHorizontal(gridSize, col, word.length) && horizontal) ||
 		(fitsVertical(gridSize, row, word.length) && vertical) ||
@@ -118,6 +122,7 @@ const random = (min, max) => {
 
 const placeWords = (grid, gridSize, words, lettersOf) => {
 	const maxAttempts = gridSize * gridSize;
+
 	for (const word of words) {
 		let attempts = 0;
 
@@ -134,7 +139,7 @@ const placeWords = (grid, gridSize, words, lettersOf) => {
 				lettersOf,
 			);
 			if (positions) {
-				insertWordIntoGrid(grid, positions, word, letterOf);
+				insertWordIntoGrid(grid, positions, word, lettersOf);
 				break;
 			}
 			attempts++;
@@ -168,11 +173,12 @@ export const main = (wordsArray, gridSize) => {
 	do {
 		grid = makeGrid(gridSize);
 
-		result = placeWords(grid, gridSize, wordsArray, lettersOf);
+		result = placeWords(grid, gridSize.height, wordsArray, lettersOf);
+		// console.log(result);
 		gridSize++;
 	} while (!result);
 	const filledGrid = fillGrid(grid);
+	console.log(filledGrid);
+	printGrid(filledGrid);
 	return filledGrid;
 };
-
-// main();

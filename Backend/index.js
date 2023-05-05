@@ -1,13 +1,19 @@
 import Express from 'express';
 const app = Express();
+import fs from 'fs';
 import bodyParser from 'body-parser';
 const jsonParser = bodyParser.json();
+import ejs from 'ejs';
+import path from 'path';
 import {
 	validateAllWords,
-	makeGrid,
 	gridDifficulty,
 	main,
 } from './wordSearchGenerator.js';
+
+import { htmlToPDF } from './pdfCreation.js';
+import { log } from 'console';
+
 const port = 3000;
 
 app.use(function (req, res, next) {
@@ -31,8 +37,19 @@ app.post('/api/WordSearchData', jsonParser, (req, res) => {
 	const gridDimensions = gridDifficulty[difficulty];
 
 	if (validateAllWords(wordsArray)) {
-		const wordSearchMatrix = main(wordsArray, gridDimensions);
-		console.log(wordSearchMatrix);
+		const data = main(wordsArray, gridDimensions);
+		const template = fs.readFileSync('./template.ejs', 'utf-8');
+
+		const html = ejs.render(template, { data });
+		// console.log(html);
+		const fileName = `${title}.html`;
+		try {
+			fs.writeFileSync(`./htmlTemplates/${title}.html`, html, 'utf8');
+		} catch (error) {
+			console.error;
+		} finally {
+			console.log('done');
+		}
 	}
 
 	res.send('content received');
