@@ -151,14 +151,41 @@ const placeWords = (grid, gridSize, words, lettersOf) => {
 	return grid;
 };
 
-const fillGrid = (grid) => {
+const fillGrid = (grid, width) => {
 	const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-	const filledGrid = grid.map((row) =>
-		row.map((l) => (l === '' ? possible[random(0, possible.length - 1)] : l)),
-	);
+	const filledGrid = [];
+
+	for (let i = 0; i < grid.length; i++) {
+		const row = [];
+		for (let j = 0; j < width; j++) {
+			if (grid[i][j] === '' || grid[i][j] === undefined) {
+				row.push(possible[random(0, possible.length - 1)]);
+			} else {
+				row.push(grid[i][j]);
+			}
+		}
+		// fill the row to the desired width if it is too short
+		if (row.length < width) {
+			row.push(
+				...Array(width - row.length).fill(
+					possible[random(0, possible.length - 1)],
+				),
+			);
+		}
+		filledGrid.push(row);
+	}
+
+	// add new rows to the grid if it is too short
+	if (filledGrid.length < width) {
+		filledGrid.push(
+			...Array(width - filledGrid.length).fill(
+				Array(width).fill(possible[random(0, possible.length - 1)]),
+			),
+		);
+	}
+
 	return filledGrid;
 };
-
 const printGrid = (filledGrid) => {
 	const str = filledGrid.map((row) => row.join(' ')).join('\n');
 	console.log(str);
@@ -174,11 +201,9 @@ export const main = (wordsArray, gridSize) => {
 		grid = makeGrid(gridSize);
 
 		result = placeWords(grid, gridSize.height, wordsArray, lettersOf);
-		// console.log(result);
 		gridSize++;
 	} while (!result);
-	const filledGrid = fillGrid(grid);
-	console.log(filledGrid);
+	const filledGrid = fillGrid(grid, 12);
 	printGrid(filledGrid);
 	return filledGrid;
 };

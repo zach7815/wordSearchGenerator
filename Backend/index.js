@@ -40,11 +40,12 @@ app.post('/api/WordSearchData', jsonParser, (req, res) => {
 		const data = main(wordsArray, gridDimensions);
 		const template = fs.readFileSync('./template.ejs', 'utf-8');
 
-		const html = ejs.render(template, { data });
+		const html = ejs.render(template, { data: data });
 		// console.log(html);
 		const fileName = `${title}.html`;
 		try {
 			fs.writeFileSync(`./htmlTemplates/${title}.html`, html, 'utf8');
+			htmlToPDF(`./htmlTemplates/${title}.html`);
 		} catch (error) {
 			console.error;
 		} finally {
