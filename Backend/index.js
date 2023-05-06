@@ -37,10 +37,17 @@ app.post('/api/WordSearchData', jsonParser, (req, res) => {
 	const gridDimensions = gridDifficulty[difficulty];
 
 	if (validateAllWords(wordsArray)) {
-		const data = main(wordsArray, gridDimensions);
+		const wordsearchGrid = main(wordsArray, gridDimensions);
 		const template = fs.readFileSync('./template.ejs', 'utf-8');
+		const data = {
+			title: title,
+			authorName: authorName,
+			wordSearchData: wordsearchGrid,
+			words: wordsArray,
+			level: difficulty,
+		};
 
-		const html = ejs.render(template, { data: data });
+		const html = ejs.render(template, data);
 		// console.log(html);
 		const fileName = `${title}.html`;
 		try {

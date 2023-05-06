@@ -121,10 +121,11 @@
 		<h1><span><%=title%></span></h1>
 		<main>
 			<table>
-  <% for (var i = 0; i < data.length; i++) { %>
+  <%
+  for (var i = 0; i < wordSearchData.length; i++) { %>
     <tr>
-      <% for (var j = 0; j < data[i].length; j++) { %>
-        <td><%= data[i][j] %></td>
+      <% for (var j = 0; j < wordSearchData[i].length; j++) { %>
+        <td><%= wordSearchData[i][j] %></td>
       <% } %>
     </tr>
   <% } %>
@@ -156,6 +157,7 @@
 				</tbody>
 			</table>
 		</aside>
+		<footer><span> A word search created by <%=authorName%></span> from the website wordSearchGen.com </footer>
 	</body>
 </html>
 

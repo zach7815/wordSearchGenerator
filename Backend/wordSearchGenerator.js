@@ -186,11 +186,6 @@ const fillGrid = (grid, width) => {
 
 	return filledGrid;
 };
-const printGrid = (filledGrid) => {
-	const str = filledGrid.map((row) => row.join(' ')).join('\n');
-	console.log(str);
-	return true;
-};
 
 export const main = (wordsArray, gridSize) => {
 	const lettersOf = makeLettersOf(wordsArray);
@@ -204,6 +199,6 @@ export const main = (wordsArray, gridSize) => {
 		gridSize++;
 	} while (!result);
 	const filledGrid = fillGrid(grid, 12);
-	printGrid(filledGrid);
+
 	return filledGrid;
 };
