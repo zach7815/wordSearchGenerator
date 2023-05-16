@@ -56,11 +56,11 @@ app.post('/api/WordSearchData', jsonParser, (req, res) => {
 			words: escapedWords,
 			level: escapedUserDetails[3],
 		};
-
-		const fileName = `${title}.html`;
+		const html = ejs.render(template, data);
+		const fileName = `${data.title}.html`;
 		try {
-			fs.writeFileSync(`./htmlTemplates/${title}.html`, html, 'utf8');
-			htmlToPDF(`./htmlTemplates/${title}.html`);
+			fs.writeFileSync(`./htmlTemplates/${fileName}.html`, html, 'utf8');
+			htmlToPDF(`./htmlTemplates/${fileName}.html`);
 		} catch (error) {
 			console.error;
 		} finally {
