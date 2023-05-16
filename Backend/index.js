@@ -66,9 +66,11 @@ app.post('/api/WordSearchData', jsonParser, (req, res) => {
 		} finally {
 			console.log('done');
 		}
+	} else {
+		console.log('the words used are invalid');
 	}
 
-	res.send('content received');
+	res.end();
 });
 
 app.listen(port, () => {

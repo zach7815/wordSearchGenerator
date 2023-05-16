@@ -73,7 +73,7 @@ const letterCanExistAtPosition = (grid, position, letter) => {
 
 const insertWordIntoGrid = (grid, positions, word, lettersOf = []) => {
 	const letters = lettersOf[word];
-	console.log(word);
+	console.log(letters);
 	// console.log(`letters Of= ${lettersOf.test}`);
 
 	letters.forEach((letter, i) => {
@@ -198,7 +198,9 @@ export const main = (wordsArray, gridSize) => {
 		result = placeWords(grid, gridSize.height, wordsArray, lettersOf);
 		gridSize++;
 	} while (!result);
-	const filledGrid = fillGrid(grid, 12);
+	console.log(result);
+	return result;
+	// const filledGrid = fillGrid(grid, 12);
 
-	return filledGrid;
+	// return filledGrid;
 };
