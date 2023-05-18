@@ -62,19 +62,15 @@ const fitsDiagonal = (gridSize, startRow, startColumn, wordLength) =>
 const fitsMirrorDiagonal = (gridSize, startRow, startColumn, wordLength) =>
 	fitsVertical(gridSize, startRow, wordLength) && startColumn - wordLength > 0;
 
-//  Check if a letter can exist in a position
+// Check if a letter can exist in a position
 const letterCanExistAtPosition = (grid, position, letter) => {
 	const [row, col] = position;
 	const canExist = new RegExp(`${letter}?$`).test(grid[row][col]);
 	return canExist;
 };
 
-// this is Where we will need to control if the letters will be uppercase or not.
-
 const insertWordIntoGrid = (grid, positions, word, lettersOf = []) => {
 	const letters = lettersOf[word];
-	console.log(letters);
-	// console.log(`letters Of= ${lettersOf.test}`);
 
 	letters.forEach((letter, i) => {
 		const [row, col] = positions[i];
@@ -89,6 +85,7 @@ const mapPositionsForWord = (
 	startPosition,
 	word,
 	lettersOf,
+	usedPositions,
 ) => {
 	const [row, col] = startPosition;
 
@@ -103,7 +100,13 @@ const mapPositionsForWord = (
 		const positions = letters.reduce((positions, letter, i) => {
 			if (positions) {
 				const position = indexToPosition(startPosition, i);
-				if (letterCanExistAtPosition(grid, position, letter)) {
+				const [row, col] = position;
+				if (
+					letterCanExistAtPosition(grid, position, letter) &&
+					!usedPositions.some(
+						([usedRow, usedCol]) => usedRow === row && usedCol === col,
+					)
+				) {
 					return positions.concat([position]);
 				}
 			}
@@ -122,6 +125,7 @@ const random = (min, max) => {
 
 const placeWords = (grid, gridSize, words, lettersOf) => {
 	const maxAttempts = gridSize * gridSize;
+	const usedPositions = [];
 
 	for (const word of words) {
 		let attempts = 0;
@@ -137,9 +141,11 @@ const placeWords = (grid, gridSize, words, lettersOf) => {
 				startPosition,
 				word,
 				lettersOf,
+				usedPositions,
 			);
 			if (positions) {
 				insertWordIntoGrid(grid, positions, word, lettersOf);
+				usedPositions.push(...positions);
 				break;
 			}
 			attempts++;
@@ -198,9 +204,8 @@ export const main = (wordsArray, gridSize) => {
 		result = placeWords(grid, gridSize.height, wordsArray, lettersOf);
 		gridSize++;
 	} while (!result);
-	console.log(result);
-	return result;
-	// const filledGrid = fillGrid(grid, 12);
 
-	// return filledGrid;
+	const filledGrid = fillGrid(grid, 12);
+
+	return filledGrid;
 };
