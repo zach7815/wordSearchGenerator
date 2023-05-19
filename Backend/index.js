@@ -4,7 +4,7 @@ import fs from 'fs';
 import bodyParser from 'body-parser';
 const jsonParser = bodyParser.json();
 import ejs from 'ejs';
-import { body, validationResult } from 'express-validator';
+import { validationResult } from 'express-validator';
 import pkg from 'lodash';
 const { escape } = pkg;
 
@@ -44,6 +44,7 @@ app.post('/api/WordSearchData', jsonParser, (req, res) => {
 	const escapedWords = rawWordsArray.map((word) => escape(word));
 
 	const gridDimensions = gridDifficulty[difficulty];
+	console.log(gridDimensions);
 
 	if (validateAllWords(escapedWords)) {
 		const wordsearchGrid = main(escapedWords, gridDimensions);
