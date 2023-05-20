@@ -204,10 +204,7 @@ export const main = (wordsArray, gridSize) => {
 		answers = result;
 		gridSize++;
 	} while (!result);
-	console.log(answers);
 	const filledGrid = fillGrid(result, gridWidth);
-	console.log(answers);
-
 	return {
 		filledGrid: filledGrid,
 		answers: answers,
