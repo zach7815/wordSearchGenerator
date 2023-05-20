@@ -44,24 +44,37 @@ app.post('/api/WordSearchData', jsonParser, (req, res) => {
 	const escapedWords = rawWordsArray.map((word) => escape(word));
 
 	const gridDimensions = gridDifficulty[difficulty];
-	console.log(gridDimensions);
 
 	if (validateAllWords(escapedWords)) {
 		const wordsearchGrid = main(escapedWords, gridDimensions);
-		const template = fs.readFileSync('./template.ejs', 'utf-8');
+		const wordSearchTemplate = fs.readFileSync('./wordSearch.ejs', 'utf-8');
+		const answersTemplate = fs.readFileSync('./answers.ejs', 'utf-8');
 		const data = {
 			authorName: escapedUserDetails[0],
 			header: escapedUserDetails[1],
 			title: escapedUserDetails[2],
-			wordSearchData: wordsearchGrid,
+			wordSearchData: wordsearchGrid.filledGrid,
+			answers: wordsearchGrid.answers,
 			words: escapedWords,
 			level: escapedUserDetails[3],
 		};
-		const html = ejs.render(template, data);
-		const fileName = `${data.title}.html`;
+		const htmlWordSearch = ejs.render(wordSearchTemplate, data);
+		const htmlAnswerGrid = ejs.render(answersTemplate, data);
+		const wordSearchFileName = `${data.title}.html`;
+		const answerSheetFileName = `${data.title}_answers.html`;
 		try {
-			fs.writeFileSync(`./htmlTemplates/${fileName}.html`, html, 'utf8');
-			htmlToPDF(`./htmlTemplates/${fileName}.html`);
+			fs.writeFileSync(
+				`./htmlTemplates/${wordSearchFileName}`,
+				htmlWordSearch,
+				'utf8',
+			);
+			fs.writeFileSync(
+				`./htmlTemplates/${answerSheetFileName}`,
+				htmlAnswerGrid,
+				'utf8',
+			);
+			htmlToPDF(`./htmlTemplates/${wordSearchFileName}`);
+			htmlToPDF(`./htmlTemplates/${answerSheetFileName}`);
 		} catch (error) {
 			console.error;
 		} finally {

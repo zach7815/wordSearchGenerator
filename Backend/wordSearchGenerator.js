@@ -126,6 +126,7 @@ const random = (min, max) => {
 const placeWords = (grid, gridSize, words, lettersOf) => {
 	const maxAttempts = gridSize * gridSize;
 	const usedPositions = [];
+	const gridCopy = grid;
 
 	for (const word of words) {
 		let attempts = 0;
@@ -143,8 +144,9 @@ const placeWords = (grid, gridSize, words, lettersOf) => {
 				lettersOf,
 				usedPositions,
 			);
+
 			if (positions) {
-				insertWordIntoGrid(grid, positions, word, lettersOf);
+				insertWordIntoGrid(gridCopy, positions, word, lettersOf);
 				usedPositions.push(...positions);
 				break;
 			}
@@ -154,61 +156,60 @@ const placeWords = (grid, gridSize, words, lettersOf) => {
 			return false;
 		}
 	}
-	return grid;
+	// console.log(gridCopy);
+	return gridCopy;
 };
-
 const fillGrid = (grid, width) => {
 	const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-	const filledGrid = [];
 
-	for (let i = 0; i < grid.length; i++) {
-		const row = [];
+	// Create a deep copy of the grid
+	const gridCopy = grid.map((row) => [...row]);
+
+	for (let i = 0; i < gridCopy.length; i++) {
 		for (let j = 0; j < width; j++) {
-			if (grid[i][j] === '' || grid[i][j] === undefined) {
-				row.push(possible[random(0, possible.length - 1)]);
-			} else {
-				row.push(grid[i][j]);
+			if (gridCopy[i][j] === '' || gridCopy[i][j] === undefined) {
+				gridCopy[i][j] = possible[random(0, possible.length - 1)];
 			}
 		}
+
 		// fill the row to the desired width if it is too short
-		if (row.length < width) {
-			row.push(
-				...Array(width - row.length).fill(
+		if (gridCopy[i].length < width) {
+			gridCopy[i].push(
+				...Array(width - gridCopy[i].length).fill(
 					possible[random(0, possible.length - 1)],
 				),
 			);
 		}
-		filledGrid.push(row);
 	}
 
 	// add new rows to the grid if it is too short
-	if (filledGrid.length < width) {
-		filledGrid.push(
-			...Array(width - filledGrid.length).fill(
-				Array(width).fill(possible[random(0, possible.length - 1)]),
-			),
-		);
+	while (gridCopy.length < width) {
+		gridCopy.push(Array(width).fill(possible[random(0, possible.length - 1)]));
 	}
 
-	return filledGrid;
+	return gridCopy;
 };
 
 export const main = (wordsArray, gridSize) => {
 	const gridWidth = gridSize.width;
 	const lettersOf = makeLettersOf(wordsArray);
+	let answers;
 
 	let grid = [];
 	let result = false;
 	do {
 		grid = makeGrid(gridSize);
 
-		result = placeWords(grid, gridSize.height, wordsArray, lettersOf);
+		result = placeWords(grid, gridSize.height, wordsArray, lettersOf); // Create a copy of the grid array
+		answers = result;
 		gridSize++;
 	} while (!result);
+	console.log(answers);
+	const filledGrid = fillGrid(result, gridWidth);
+	console.log(answers);
 
-	console.log();
-
-	const filledGrid = fillGrid(grid, gridWidth);
-
-	return filledGrid;
+	return {
+		filledGrid: filledGrid,
+		answers: answers,
+	};
 };

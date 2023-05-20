@@ -27,7 +27,7 @@
 				border-radius: 5px;
 				margin-top: 3rem;
 				width: 80%;
-				height: 90vh;
+				height: 900px;
 				left: 5rem;
 			}
 
@@ -105,6 +105,7 @@
 				font-size: 1rem;
 			}
 
+
 			.wordsTable {
 				display: flex;
 				justify-content: center;
@@ -113,6 +114,12 @@
 			.wordsTable table td {
 				border: hidden;
 			}
+
+			footer{
+				position:absolute;
+				bottom:3rem;
+			}
+
 		</style>
 	</head>
 
@@ -122,9 +129,9 @@
 		<main>
 			<table>
   <%
-  for (var i = 0; i < wordSearchData.length; i++) { %>
+  for (let i = 0; i < wordSearchData.length; i++) { %>
     <tr>
-      <% for (var j = 0; j < wordSearchData[i].length; j++) { %>
+      <% for (let j = 0; j < wordSearchData[i].length; j++) { %>
         <td><%= wordSearchData[i][j] %></td>
       <% } %>
     </tr>
@@ -135,25 +142,19 @@
 			<table>
 				<thead>
 					<tr>
-						<th colspan="3">Can you finds the words below</th>
+						<th colspan=<%= words.length %>>Can you finds the words below</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
-						<td>word</td>
-						<td>word</td>
-						<td>word</td>
-					</tr>
-					<tr>
-						<td>word</td>
-						<td>word</td>
-						<td>word</td>
-					</tr>
-					<tr>
-						<td>word</td>
-						<td>word</td>
-						<td>word</td>
-					</tr>
+				<%
+				 for (let i=0; i< words.length; i++ ) { %>
+					<% let wordsInRow=0; %>
+
+
+						<td>
+							<%=words[i]%>
+						</td>
+						<% } %>
 				</tbody>
 			</table>
 		</aside>

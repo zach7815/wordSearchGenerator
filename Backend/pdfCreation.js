@@ -2,6 +2,7 @@ import puppeteer from 'puppeteer';
 import fs from 'fs';
 
 export const htmlToPDF = async (htmlFile) => {
+	const regex = /New (.+?)\.html$/;
 	const browser = await puppeteer.launch({
 		headless: 'new',
 		defaultViewport: null,
@@ -21,7 +22,7 @@ export const htmlToPDF = async (htmlFile) => {
 	await page.setViewport({ width: 800, height: 600 });
 
 	await page.pdf({
-		path: 'example.pdf',
+		path: `${htmlFile.match(regex)[1]}.pdf`,
 		format: 'letter',
 		margin: {
 			top: '0.5in',
