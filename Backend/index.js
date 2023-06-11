@@ -12,7 +12,7 @@ import {
 	validateAllWords,
 	gridDifficulty,
 	main,
-} from './wordSearchGenerator.js';
+} from './word-search-generator.js';
 import { htmlToPDF } from './pdfCreation.js';
 
 const port = 3000;

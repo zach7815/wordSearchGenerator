@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import Form from './form';
+import Form from './Form';
 
 function App() {
 	const userOptions = {
