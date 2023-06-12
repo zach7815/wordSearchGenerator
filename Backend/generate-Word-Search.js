@@ -106,6 +106,15 @@ const storeLettersAndLength = (words) => {
 	return result;
 };
 
+const lettersOf = (words) => {
+	const splitWords = [];
+	words.forEach((word) => {
+		const splitWord = word.split('');
+		splitWords.push(splitWord);
+	});
+	return splitWords;
+};
+
 const longestWord = (words) => {
 	return Math.max(...words.map((word) => word.length));
 };
@@ -172,7 +181,7 @@ const main = (words, gridSize) => {
 
 	const grid = createGrid(rows, columns);
 
-	const lettersAndLength = storeLettersAndLength(words);
+	const lettersOfWords = lettersOf(words);
 
 	const testNumber = generateRandomCoordinates(rows, columns);
 
@@ -183,18 +192,20 @@ const main = (words, gridSize) => {
 		testNumber,
 	);
 
-	const coordinateList = generateMapCoordinates([3, 4], 'horizontal', 4);
-	const coordinateList2 = generateMapCoordinates([0, 0], 'vertical', 6);
+	console.log(lettersOfWords);
 
-	const updatedGrid = [
-		...placeWord(grid, lettersAndLength[0][`test`][`word`], coordinateList),
-	];
-	const updatedGrid2 = placeWord(
-		updatedGrid,
-		lettersAndLength[1][`random`][`word`],
-		coordinateList2,
-	);
-	console.table(updatedGrid2);
+	// const coordinateList = generateMapCoordinates([3, 4], 'horizontal', 4);
+	// const coordinateList2 = generateMapCoordinates([0, 0], 'vertical', 6);
+
+	// const updatedGrid = [
+	// 	...placeWord(grid, lettersAndLength[0][`test`][`word`], coordinateList),
+	// ];
+	// const updatedGrid2 = placeWord(
+	// 	updatedGrid,
+	// 	lettersAndLength[1][`random`][`word`],
+	// 	coordinateList2,
+	// );
+	// console.table(updatedGrid2);
 };
 
 main(exampleWords, gridDifficulty['easy']);
