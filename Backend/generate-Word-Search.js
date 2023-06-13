@@ -162,6 +162,26 @@ const placeWord = (grid, wordObject, coordinates) => {
 	return newGrid;
 };
 
+const generateCoordinateList = (wordLetters, rows, columns) => {
+	let noDirectionPossible = true;
+	let availableDirections;
+
+	do {
+		const startCoordinates = generateRandomCoordinates(rows, columns);
+		availableDirections = checkPossibleDirections(
+			rows,
+			columns,
+			wordLetters.length,
+			startCoordinates,
+		);
+		noDirectionPossible = confirmSomeDirectionsPossible(availableDirections);
+	} while (noDirectionPossible);
+
+	const possibleDirections = validDirections(availableDirections);
+
+	return { Word: wordLetters, directions: possibleDirections };
+};
+
 const placeAllWords = (grid, wordObjects, coordinateLists) => {
 	let updatedGrid = grid;
 	for (let i = 0; i < wordObjects.length; i++) {
@@ -183,29 +203,13 @@ const main = (words, gridSize) => {
 
 	const lettersOfWords = lettersOf(words);
 
-	const testNumber = generateRandomCoordinates(rows, columns);
-
-	const availableDirections = checkPossibleDirections(
+	const coordinateList = generateCoordinateList(
+		lettersOfWords[0],
 		rows,
 		columns,
-		5,
-		testNumber,
 	);
 
-	console.log(lettersOfWords);
-
-	// const coordinateList = generateMapCoordinates([3, 4], 'horizontal', 4);
-	// const coordinateList2 = generateMapCoordinates([0, 0], 'vertical', 6);
-
-	// const updatedGrid = [
-	// 	...placeWord(grid, lettersAndLength[0][`test`][`word`], coordinateList),
-	// ];
-	// const updatedGrid2 = placeWord(
-	// 	updatedGrid,
-	// 	lettersAndLength[1][`random`][`word`],
-	// 	coordinateList2,
-	// );
-	// console.table(updatedGrid2);
+	console.log(coordinateList);
 };
 
 main(exampleWords, gridDifficulty['easy']);
