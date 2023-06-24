@@ -1,3 +1,9 @@
+import {
+	checkPossibleDirections,
+	confirmSomeDirectionsPossible,
+	chooseDirection,
+} from './check-direction-functions.js';
+
 const exampleWords = [`test`, `random`, `word`, `challenge`];
 
 export const validateAllWords = (wordsArray) => {
@@ -25,6 +31,32 @@ export const gridDifficulty = {
 	},
 };
 
+const wordSearch = [
+	['', '', '', '', '', '', '', ''],
+
+	['', '', '', '', '', '', '', ''],
+
+	['', '', '', '', '', '', '', ''],
+
+	['', '', '', '', '', '', '', ''],
+
+	['', '', '', '', '', '', '', ''],
+
+	['', '', '', '', '', '', '', ''],
+
+	['', '', '', '', '', '', '', ''],
+
+	['', '', '', '', '', '', '', ''],
+
+	['', '', '', '', '', '', '', ''],
+
+	['', '', '', '', '', '', '', ''],
+
+	['', '', '', '', '', '', '', ''],
+
+	['', '', '', '', '', '', '', ''],
+];
+
 const createGrid = (rows, columns) => {
 	return Array(rows).fill(Array(columns).fill(''));
 };
@@ -33,56 +65,6 @@ const generateRandomCoordinates = (rowLimit, columnLimit) => {
 	const randomColCoordinate = Math.floor(Math.random() * columnLimit) + 0;
 	const randomRowCoordinate = Math.floor(Math.random() * rowLimit) + 0;
 	return [randomRowCoordinate, randomColCoordinate];
-};
-
-const checkPossibleDirections = (rows, columns, wordLength, coordinates) => {
-	const possibleDirections = {
-		horizontal: checkHorizontalSpace(columns, coordinates, wordLength),
-		vertical: checkVerticalSpace(rows, coordinates, wordLength),
-		diagonal: checkDiagonalSpace(rows, columns, coordinates, wordLength),
-		mirrorDiagonal: checkMirrorDiagonal(rows, coordinates, wordLength),
-	};
-	return possibleDirections;
-};
-
-const confirmSomeDirectionsPossible = (directionsObject) => {
-	return Object.values(directionsObject).every((value) => value === false);
-};
-
-const checkHorizontalSpace = (columnLimit, coordinates, wordLength) => {
-	const spaceAvailable = columnLimit - coordinates[1] + 1;
-	if (spaceAvailable >= wordLength) {
-		return true;
-	}
-	return false;
-};
-
-const checkVerticalSpace = (rowLimit, coordinates, wordLength) => {
-	const spaceAvailable = rowLimit - coordinates[0] + 1;
-	if (spaceAvailable >= wordLength) {
-		return true;
-	}
-	return false;
-};
-
-const checkDiagonalSpace = (rowLimit, columnLimit, coordinates, wordLength) => {
-	const spacesAvailable = [
-		rowLimit - coordinates[0] + 1,
-		columnLimit - coordinates[1] + 1,
-	];
-	if (spacesAvailable[0] >= wordLength && spacesAvailable[1] >= wordLength) {
-		return true;
-	}
-
-	return false;
-};
-
-const checkMirrorDiagonal = (rowLimit, coordinates, wordLength) => {
-	const horizontalSpaceAvailable = rowLimit - coordinates[0] + 1;
-	if (horizontalSpaceAvailable >= wordLength && coordinates[1] >= wordLength) {
-		return true;
-	}
-	return false;
 };
 
 const validDirections = (rawDirectionsObject) => {
@@ -182,11 +164,34 @@ const generateCoordinateList = (wordLetters, rows, columns) => {
 	return { Word: wordLetters, directions: possibleDirections };
 };
 
-const placeAllWords = (grid, wordObjects, coordinateLists) => {
-	let updatedGrid = grid;
-	for (let i = 0; i < wordObjects.length; i++) {
-		updatedGrid = placeWord(updatedGrid, wordObjects[i], coordinateLists[i]);
+const createWordSearch = (grid, lettersOf, rows, columns) => {
+	const maxTries = rows * columns * (rows * columns);
+	const unplacedWords = [];
+
+	for (let i = 0; i < lettersOf.length; i++) {
+		let startCoordinates = generateRandomCoordinates(rows, columns);
+		let possibleDirections = checkPossibleDirections(
+			rows,
+			columns,
+			lettersOf[i].length,
+			startCoordinates,
+		);
+		let choosenDirection = chooseDirection(possibleDirections);
+		console.log(choosenDirection);
 	}
+};
+
+const updateDirectionRecords = (placedWords, direction) => {
+	return placedWords[directions] + 1;
+};
+
+const checkConflict = (wordSearch, coordinateList) => {
+	for (let coordinate of coordinateList) {
+		if (wordSearch[coordinate[0]][coordinate[1]] !== '') {
+			return false;
+		}
+	}
+	return true;
 };
 
 const main = (words, gridSize) => {
@@ -200,16 +205,31 @@ const main = (words, gridSize) => {
 	};
 
 	const grid = createGrid(rows, columns);
-
-	const lettersOfWords = lettersOf(words);
-
-	const coordinateList = generateCoordinateList(
-		lettersOfWords[0],
-		rows,
-		columns,
+	const chosenDirection = chooseDirection(
+		{
+			horizontal: 3,
+			vertical: 2,
+			diagonal: 4,
+			mirrorDiagonal: 0,
+		},
+		{
+			horizontal: true,
+			vertical: true,
+			diagonal: true,
+		},
 	);
 
-	console.log(coordinateList);
+	console.log(chosenDirection);
+
+	// const lettersOfWords = lettersOf(words);
+	// const wordSearchGrid = createWordSearch(
+	// 	wordSearch,
+	// 	lettersOfWords,
+	// 	rows,
+	// 	columns,
+	// );
+
+	// console.log(wordSearchGrid);
 };
 
 main(exampleWords, gridDifficulty['easy']);
