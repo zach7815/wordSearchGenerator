@@ -1,9 +1,21 @@
+import { useState } from 'react';
 import axios from 'axios';
-import { UserSubmission } from './interfaces/formInterfaces';
 import './App.css';
 import { Form } from './components/form';
+import { UserSubmission } from './interfaces/formInterfaces';
 
+const initialUserSubmission: UserSubmission = {
+  authorName: '',
+  header: '',
+  title: '',
+  difficulty: '',
+  words: [],
+};
 function App() {
+  const [userSubmission, setUserSubmission] = useState<UserSubmission>(
+    initialUserSubmission
+  );
+
   function handleSave(submission: UserSubmission) {
     axios
       .post('http://localhost:3000/api/WordSearchData', submission)
@@ -11,13 +23,17 @@ function App() {
   }
 
   return (
-    <div>
+    <>
       <div className="App">
         <div className="formContainer">
-          <Form handleSave={handleSave} />
+          <Form
+            handleSave={handleSave}
+            setUserSubmission={setUserSubmission}
+            userSubmission={userSubmission}
+          />
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

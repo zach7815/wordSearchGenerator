@@ -1,9 +1,11 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Select from 'react-select';
 import { useController, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { string, z } from 'zod';
 import { UserSubmission } from '../interfaces/formInterfaces';
+
+
 
 const schema = z.object({
   authorName: string().min(4),
@@ -28,12 +30,15 @@ const difficultyOptions = [
 
 
 interface FormProps {
-  handleSave: (submission:UserSubmission) => void;
-  userOptions: UserSubmission;
+  handleSave: (submission: UserSubmission) => void;
+  userSubmission: UserSubmission; // Corrected prop name
+  setUserSubmission: (submission: UserSubmission) => void;
 }
-export const Form: React.FC<FormProps> = ({ handleSave, userOptions }) => {
+export const Form: React.FC<FormProps> = ({ handleSave, userSubmission }) => {
+
+
   const { register, control, handleSubmit, formState } = useForm({
-    defaultValues: userOptions,
+    defaultValues: userSubmission,
     resolver: zodResolver(schema),
   });
 

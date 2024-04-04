@@ -24,7 +24,8 @@
 	},
 	"homepage": "https://github.com/zach7815/wordSearchGenerator#readme",
 	"devDependencies": {
-		"jest": "^29.5.0"
+		"jest": "^29.5.0",
+		"typescript": "^5.4.3"
 	},
 	"dependencies": {
 		"body-parser": "^1.20.2",
