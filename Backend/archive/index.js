@@ -83,7 +83,7 @@ app.post('/api/WordSearchData', jsonParser, (req, res) => {
     } catch (error) {
       console.error;
     } finally {
-   
+
     }
   } else {
     console.log('the words used are invalid');
