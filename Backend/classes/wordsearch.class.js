@@ -1,3 +1,4 @@
+"use strict";
 var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
         if (ar || !(i in from)) {
@@ -7,6 +8,8 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     }
     return to.concat(ar || Array.prototype.slice.call(from));
 };
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Wordsearch = void 0;
 var Wordsearch = /** @class */ (function () {
     function Wordsearch(words, level) {
         this.difficulty = {
@@ -15,36 +18,10 @@ var Wordsearch = /** @class */ (function () {
             hard: 20,
         };
         this.highlightedItems = [];
-        this.letters = [
-            'A',
-            'B',
-            'C',
-            'D',
-            'E',
-            'F',
-            'G',
-            'H',
-            'I',
-            'J',
-            'K',
-            'L',
-            'M',
-            'N',
-            'O',
-            'P',
-            'Q',
-            'S',
-            'T',
-            'U',
-            'V',
-            'W',
-            'X',
-            'Y',
-            'Z',
-        ];
         this.random = function (min, max) {
             return Math.floor(Math.random() * (max - min + 1)) + min;
         };
+        this.grid = [[]];
         this.words = words;
         this.size = this.difficulty[level];
         this.unusedWords = [];
@@ -71,12 +48,11 @@ var Wordsearch = /** @class */ (function () {
         return this.grid;
     };
     Wordsearch.prototype.placeWords = function () {
-        var highlightedItems = [];
         // Insert each word into the grid at a random location and orientation
         for (var _i = 0, _a = this.words; _i < _a.length; _i++) {
             var word = _a[_i];
             var wordLength = word.length;
-            var maxIterations = 50;
+            var maxIterations = 1000;
             var iterations = 0;
             while (iterations < maxIterations) {
                 var orientation_1 = Math.floor(Math.random() * 4); // 0 = horizontal, 1 = vertical, 2 = diagonal up, 3 = diagonal down
@@ -142,28 +118,45 @@ var Wordsearch = /** @class */ (function () {
             return validWord.test(word);
         });
     };
-    Wordsearch.prototype.showWords = function () {
-        return this.words;
-    };
-    Wordsearch.prototype.showUnusedWords = function () {
-        return this.unusedWords;
-    };
-    Wordsearch.prototype.showGrid = function () {
-        return this.grid;
-    };
-    Wordsearch.prototype.showHighlightedWords = function () {
-        return this.highlightedItems;
-    };
+    Object.defineProperty(Wordsearch.prototype, "showWords", {
+        get: function () {
+            return this.words;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(Wordsearch.prototype, "showUnusedWords", {
+        get: function () {
+            return this.unusedWords;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(Wordsearch.prototype, "showGrid", {
+        get: function () {
+            return this.grid;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(Wordsearch.prototype, "showHighlightedWords", {
+        get: function () {
+            return this.highlightedItems;
+        },
+        enumerable: false,
+        configurable: true
+    });
     return Wordsearch;
 }());
-var words = ['apple', 'banana', 'cherry'];
+exports.Wordsearch = Wordsearch;
+//** For Testing purposes- to remove before deploy */
 function main() {
-    var wordsearch = new Wordsearch(words, 'easy');
+    var wordsearch = new Wordsearch(['APPLE', 'chocolate', 'banana'], 'easy');
     console.log(wordsearch.makeGrid());
     wordsearch.validateWords();
     console.log('placed words is returning:', wordsearch.placeWords());
-    console.log(wordsearch.showGrid());
+    console.log(wordsearch.showGrid);
     wordsearch.fillGrid();
-    console.log('filled wordsearch is returning:', wordsearch.showGrid());
+    console.log('filled wordsearch is returning:', wordsearch.showGrid);
 }
 main();

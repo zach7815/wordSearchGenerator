@@ -1,12 +1,6 @@
-interface Difficulty {
-  easy: [number, number];
-  medium: [number, number];
-  hard: [number, number];
-}
-
 export class Wordsearch {
   private words: string[];
-  private difficulty = {
+  private difficulty: {[key:string]:number}={
     easy: 12,
     medium: 16,
     hard: 20,
@@ -19,35 +13,8 @@ export class Wordsearch {
     | string
   )[] = [];
 
-  private letters: string[] = [
-    'A',
-    'B',
-    'C',
-    'D',
-    'E',
-    'F',
-    'G',
-    'H',
-    'I',
-    'J',
-    'K',
-    'L',
-    'M',
-    'N',
-    'O',
-    'P',
-    'Q',
-    'S',
-    'T',
-    'U',
-    'V',
-    'W',
-    'X',
-    'Y',
-    'Z',
-  ];
-
   constructor(words: string[], level: string) {
+    this.grid=[[]]
     this.words = words;
     this.size = this.difficulty[level];
     this.unusedWords = [];
@@ -68,6 +35,7 @@ export class Wordsearch {
     const possible: string = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     const gridCopy = this.grid.map((row) => [...row]);
 
+
     for (let i = 0; i < gridCopy.length; i++) {
       let row = gridCopy[i];
       for (let j = 0; j < row.length; j++) {
@@ -81,12 +49,10 @@ export class Wordsearch {
   }
 
   placeWords() {
-    const highlightedItems: any = [];
-
     // Insert each word into the grid at a random location and orientation
     for (const word of this.words) {
       const wordLength = word.length;
-      const maxIterations = 50;
+      const maxIterations = 1000;
       let iterations = 0;
       while (iterations < maxIterations) {
         const orientation = Math.floor(Math.random() * 4); // 0 = horizontal, 1 = vertical, 2 = diagonal up, 3 = diagonal down
@@ -121,7 +87,6 @@ export class Wordsearch {
         }
 
         let validLocation = true;
-
         // Check if the word fits in the grid at the chosen location and orientation
         for (let i = 0; i < wordLength; i++) {
           const row = startRow + i * rowStep;
@@ -132,7 +97,6 @@ export class Wordsearch {
             break;
           }
         }
-
         // If the word fits, insert it into the grid and exit the loop
         if (validLocation) {
           for (let i = 0; i < wordLength; i++) {
@@ -163,31 +127,33 @@ export class Wordsearch {
     });
   }
 
-  showWords() {
+  get showWords() {
     return this.words;
   }
-  showUnusedWords() {
+  get showUnusedWords() {
     return this.unusedWords;
   }
 
-  showGrid() {
+  get showGrid() {
     return this.grid;
   }
 
-  showHighlightedWords() {
+  get showHighlightedWords() {
     return this.highlightedItems;
   }
 }
 
+//** For Testing purposes- to remove before deploy */
+
 function main() {
-  const wordsearch = new Wordsearch(words, 'easy');
+  const wordsearch = new Wordsearch(['APPLE', 'chocolate', 'banana'], 'easy');
   console.log(wordsearch.makeGrid());
 
   wordsearch.validateWords();
   console.log('placed words is returning:', wordsearch.placeWords());
-  console.log(wordsearch.showGrid());
+  console.log(wordsearch.showGrid);
   wordsearch.fillGrid();
-  console.log('filled wordsearch is returning:', wordsearch.showGrid());
+  console.log('filled wordsearch is returning:', wordsearch.showGrid);
 }
 
 main();
