@@ -18,7 +18,7 @@ function App() {
 
   function handleSave(submission: UserSubmission) {
     axios
-      .post('http://localhost:3000/api/WordSearchData', submission)
+      .post('http://localhost:8000/api/WordsearchData', submission)
       .then((result) => console.log(result));
   }
 

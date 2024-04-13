@@ -132,3 +132,4 @@ dist
 # ignore generated pdfs and html files
 .pdf
 .html
+.DS_Store
