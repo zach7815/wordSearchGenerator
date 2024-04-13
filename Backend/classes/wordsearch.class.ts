@@ -1,6 +1,6 @@
 export class Wordsearch {
   private words: string[];
-  private difficulty: {[key:string]:number}={
+  private difficulty: { [key: string]: number } = {
     easy: 12,
     medium: 16,
     hard: 20,
@@ -14,7 +14,7 @@ export class Wordsearch {
   )[] = [];
 
   constructor(words: string[], level: string) {
-    this.grid=[[]]
+    this.grid = [[]];
     this.words = words;
     this.size = this.difficulty[level];
     this.unusedWords = [];
@@ -34,7 +34,6 @@ export class Wordsearch {
   fillGrid() {
     const possible: string = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     const gridCopy = this.grid.map((row) => [...row]);
-
 
     for (let i = 0; i < gridCopy.length; i++) {
       let row = gridCopy[i];
@@ -144,16 +143,3 @@ export class Wordsearch {
 }
 
 //** For Testing purposes- to remove before deploy */
-
-function main() {
-  const wordsearch = new Wordsearch(['APPLE', 'chocolate', 'banana'], 'easy');
-  console.log(wordsearch.makeGrid());
-
-  wordsearch.validateWords();
-  console.log('placed words is returning:', wordsearch.placeWords());
-  console.log(wordsearch.showGrid);
-  wordsearch.fillGrid();
-  console.log('filled wordsearch is returning:', wordsearch.showGrid);
-}
-
-main();

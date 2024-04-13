@@ -1,25 +1,58 @@
 import express = require('express');
 const app = express();
-import fs from 'fs';
-import { Wordsearch } from './classes/wordsearch.class';
+import cors = require('cors');
+import { UserSubmission } from '../Types/index';
+import bodyParser = require('body-parser');
+import * as ejs from 'ejs';
+import * as pkg from 'lodash';
+const { escape } = pkg;
+import { Wordsearch } from './classes/wordsearch.class.js';
 import dotenv = require('dotenv');
+
 dotenv.config();
 
-const words: string[] = ['Apple', 'banana', 'cherry'];
-const level: string = 'easy';
+app.use(bodyParser.json({ limit: '100mb' }));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+  );
+  res.setHeader(
+    'Access-Control-Allow-Methods',
+    'GET, POST, PATCH, PUT, DELETE, OPTIONS'
+  );
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'append,delete,entries,foreach,get,has,keys,set,values,Authorization'
+  );
+  next();
+});
 
-// const main = () => {
-//   const wordsearch = new Wordsearch(['APPLE', 'chocolate', 'banana'], 'easy');
-//   console.log(wordsearch.makeGrid());
-//   wordsearch.validateWords();
-//   console.log('placed words is returning:', wordsearch.placeWords());
-//   wordsearch.fillGrid();
-//   console.log(wordsearch.showGrid);
-// };
+app.use(cors());
 
 app.post('/api/WordsearchData', (req, res) => {
-  console.log(req.param);
-  res.send('result received');
+  const { submission }: { submission: UserSubmission } = req.body;
+  const { authorName, header, title, difficulty, words } = submission;
+
+  const escapedWords: string[] = words.map((word: string) => escape(word));
+  console.log(escapedWords);
+  const escapedUserDetails: string[] = [
+    authorName,
+    header,
+    title,
+    difficulty,
+  ].map((info: string) => escape(info));
+
+  console.log(escapedUserDetails);
+
+  // const wordsearch = new Wordsearch(words, difficulty);
+  // wordsearch.makeGrid();
+  // wordsearch.placeWords();
+  // wordsearch.fillGrid();
+  // const finishedWordSearch = wordsearch.showGrid;
+  res.send('hello');
 });
 
 const PORT = process.env.PORT ?? 3000;

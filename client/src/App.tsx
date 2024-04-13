@@ -2,23 +2,22 @@ import { useState } from 'react';
 import axios from 'axios';
 import './App.css';
 import { Form } from './components/form';
-import { UserSubmission } from './interfaces/formInterfaces';
+import { UserSubmission } from '../../Types/index.ts';
 
-const initialUserSubmission: UserSubmission = {
-  authorName: '',
-  header: '',
-  title: '',
-  difficulty: '',
-  words: [],
-};
 function App() {
-  const [userSubmission, setUserSubmission] = useState<UserSubmission>(
-    initialUserSubmission
-  );
+  const [userSubmission, setUserSubmission] = useState<UserSubmission>({
+    authorName: '',
+    header: '',
+    title: '',
+    difficulty: '',
+    words: [],
+  });
 
   function handleSave(submission: UserSubmission) {
+    console.log(typeof submission);
     axios
-      .post('http://localhost:8000/api/WordsearchData', submission)
+      .post('http://localhost:8000/api/WordsearchData', { submission })
+
       .then((result) => console.log(result));
   }
 
