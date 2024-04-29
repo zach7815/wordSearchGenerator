@@ -1,11 +1,9 @@
-import React, {useState} from 'react';
+import React from 'react';
 import Select from 'react-select';
 import { useController, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { string, z } from 'zod';
-import { UserSubmission } from '../interfaces/formInterfaces';
-
-
+import { UserSubmission, Option, Field } from '../../../Types/index.js';
 
 const schema = z.object({
   authorName: string().min(4),
@@ -16,6 +14,10 @@ const schema = z.object({
 });
 
 const headerOptions = [
+  {
+    value: 'name, class, date and grade',
+    label: 'name, class, date and grade',
+  },
   { value: 'name, class and date', label: 'name, class and date' },
   { value: 'name and date', label: 'name and date' },
   { value: 'name only', label: 'name only' },
@@ -23,11 +25,10 @@ const headerOptions = [
 ];
 
 const difficultyOptions = [
-  { value: 'easy', label: 'easy' },
-  { value: 'intermediate', label: 'intermediate' },
-  { value: 'Advanced', label: 'advanced' },
+  { value: '10x10', label: '10x10' },
+  { value: '15x15', label: '15x15' },
+  { value: '20x20', label: '20x20' },
 ];
-
 
 interface FormProps {
   handleSave: (submission: UserSubmission) => void;
@@ -35,8 +36,6 @@ interface FormProps {
   setUserSubmission: (submission: UserSubmission) => void;
 }
 export const Form: React.FC<FormProps> = ({ handleSave, userSubmission }) => {
-
-
   const { register, control, handleSubmit, formState } = useForm({
     defaultValues: userSubmission,
     resolver: zodResolver(schema),
@@ -46,9 +45,8 @@ export const Form: React.FC<FormProps> = ({ handleSave, userSubmission }) => {
   const { field: headerOpt } = useController({ name: 'header', control });
   const { field: levels } = useController({ name: 'difficulty', control });
 
-
-
-  const handleSelectChange = (option, field) => {
+  const handleSelectChange = (option: Option | null, field: Field) => {
+    if (option === null) return;
     field.onChange(option.value);
   };
 
@@ -66,9 +64,11 @@ export const Form: React.FC<FormProps> = ({ handleSave, userSubmission }) => {
           <label>
             <p>choose what your header will contain</p>
             <Select
-              value={headerOptions.find(
-                ({ value }) => value === headerOpt.value
-              )}
+              value={
+                headerOptions.find(
+                  (option) => option.value === headerOpt.value
+                ) || null
+              }
               onChange={(option) => {
                 handleSelectChange(option, headerOpt);
               }}

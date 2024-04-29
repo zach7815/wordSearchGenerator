@@ -1,8 +1,11 @@
 import { useState } from 'react';
 import axios from 'axios';
 import './App.css';
-import { Form } from './components/form';
 import { UserSubmission } from '../../Types/index.ts';
+import { FormContainer } from './components/FormContainer.tsx';
+
+
+
 
 function App() {
   const [userSubmission, setUserSubmission] = useState<UserSubmission>({
@@ -14,7 +17,6 @@ function App() {
   });
 
   function handleSave(submission: UserSubmission) {
-    console.log(typeof submission);
     axios
       .post('http://localhost:8000/api/WordsearchData', { submission })
 
@@ -22,17 +24,19 @@ function App() {
   }
 
   return (
-    <>
-      <div className="App">
-        <div className="formContainer">
-          <Form
-            handleSave={handleSave}
-            setUserSubmission={setUserSubmission}
+    <div className="App">
+      <div className="main-container">
+
+        <div className="form-container">
+          <FormContainer
             userSubmission={userSubmission}
+            setUserSubmission={setUserSubmission}
           />
         </div>
+
+        <div className="example-container">Shows options for wordsearch</div>
       </div>
-    </>
+    </div>
   );
 }
 

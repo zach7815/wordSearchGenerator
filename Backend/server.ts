@@ -8,6 +8,7 @@ import * as pkg from 'lodash';
 const { escape } = pkg;
 import { Wordsearch } from './classes/wordsearch.class.js';
 import dotenv = require('dotenv');
+import { log } from 'console';
 
 dotenv.config();
 
