@@ -21,6 +21,7 @@ app.use(function (req, res, next) {
 app.use(cors());
 app.post('/api/WordsearchData', function (req, res) {
     var submission = req.body.submission;
+    console.log(req.body);
     var authorName = submission.authorName, header = submission.header, title = submission.title, difficulty = submission.difficulty, words = submission.words;
     var escapedWords = words.map(function (word) { return escape(word); });
     console.log(escapedWords);
@@ -29,7 +30,7 @@ app.post('/api/WordsearchData', function (req, res) {
         header,
         title,
         difficulty,
-    ].map(function (info) { return escape(info); });
+    ].map(function (info) { return escape(info || ''); });
     console.log(escapedUserDetails);
     // const wordsearch = new Wordsearch(words, difficulty);
     // wordsearch.makeGrid();

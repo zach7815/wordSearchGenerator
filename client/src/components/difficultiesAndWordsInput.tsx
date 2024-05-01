@@ -3,8 +3,8 @@ import Select from 'react-select';
 import { useController, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { string, z } from 'zod';
-
-import { UserSubmission, Option, Field } from '../../../Types/index.js';
+import useAppContext from '../hooks/useContext.js';
+import { Option, Field } from '../../../Types/index.js';
 const difficultyOptions = [
   { value: '10x10', label: '10x10' },
   { value: '15x15', label: '15x15' },
@@ -12,26 +12,19 @@ const difficultyOptions = [
 ];
 
 const schema = z.object({
-  authorName: string().min(4),
-  header: string().min(4, { message: 'please select an option' }),
-  title: string().min(4).max(25),
+  // authorName: string().min(4),
+  // header: string().min(4, { message: 'please select an option' }),
+  // title: string().min(4).max(25),
   difficulty: string().min(4, { message: 'please select an option' }),
-  words: string(),
+  words: string().array().nonempty(),
 });
 
-interface FormProps {
-  handleSave: (submission: UserSubmission) => void;
-  userSubmission: UserSubmission; // Corrected prop name
-  setUserSubmission: (submission: UserSubmission) => void;
-}
-
-export const DifficultiesAndWords: React.FC<FormProps> = ({
-  userSubmission,
-}) => {
+export const DifficultiesAndWords: React.FC = () => {
   const { register, control, formState } = useForm({
-    defaultValues: userSubmission,
     resolver: zodResolver(schema),
   });
+
+  const { userSubmission, setUserSubmission } = useAppContext();
 
   const [levelChoice, setLevelChoice] = useState<string>('');
   const [wordLimitMessage, setWordLimitMessage] = useState<string>('');
@@ -79,21 +72,26 @@ export const DifficultiesAndWords: React.FC<FormProps> = ({
     <div>
       <div>
         <h3>Choose your header design</h3>
-        <div style={{ color: 'red' }}>{errors.authorName?.message} </div>
       </div>
       <div>
         <label>
           <p> Select your difficulty level</p>
           <Select
-          required
+            required
+            autoFocus
             value={difficultyOptions.find(({ value }) => value === Field.value)}
             {...register('difficulty')}
             onChange={(option) => {
-              handleSelectChange(option, Field);
+              if (option) {
+                handleSelectChange(option, Field);
+                setUserSubmission((prevState) => ({
+                  ...prevState,
+                  difficulty: option.value,
+                }));
+              }
             }}
             options={difficultyOptions}
           />
-          <div style={{ color: 'red' }}> {errors.difficulty?.message}</div>
         </label>
         <div>{wordLimitMessage}</div>
 
@@ -107,9 +105,23 @@ export const DifficultiesAndWords: React.FC<FormProps> = ({
             {Array.from({ length: numColumns }, (_, columnIndex) => (
               <div key={columnIndex} style={{ flex: 1 }}>
                 {/* Create inputs within each column */}
-                {Array.from({ length: numInputs }, (_, inputIndex) => (
-                  <input key={inputIndex} type="text" />
-                ))}
+                {Array.from({ length: numInputs }, (_, inputIndex) => {
+                  const uniqueIndex = columnIndex * numInputs + inputIndex;
+                  return (
+                    <input
+                      key={uniqueIndex}
+                      type="text"
+                      onChange={(e) => {
+                        const updatedWords = [...userSubmission.words];
+                        updatedWords[uniqueIndex] = e.target.value;
+                        setUserSubmission((prevState) => ({
+                          ...prevState,
+                          words: updatedWords,
+                        }));
+                      }}
+                    />
+                  );
+                })}
               </div>
             ))}
           </div>

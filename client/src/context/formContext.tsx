@@ -1,10 +1,10 @@
 import React, { createContext } from 'react';
 import { UserSubmission } from '../../../Types';
 
-interface FormContextType {
+export interface AppContextType {
   userSubmission: UserSubmission;
   setUserSubmission: React.Dispatch<React.SetStateAction<UserSubmission>>;
 }
-const FormContext = createContext<FormContextType | undefined>(undefined);
+const AppContext = createContext<AppContextType | undefined>(undefined);
 
-export default FormContext;
+export default AppContext;

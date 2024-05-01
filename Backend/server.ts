@@ -35,6 +35,7 @@ app.use(cors());
 
 app.post('/api/WordsearchData', (req, res) => {
   const { submission }: { submission: UserSubmission } = req.body;
+  console.log(req.body);
   const { authorName, header, title, difficulty, words } = submission;
 
   const escapedWords: string[] = words.map((word: string) => escape(word));
@@ -44,9 +45,7 @@ app.post('/api/WordsearchData', (req, res) => {
     header,
     title,
     difficulty,
-  ].map((info: string) => escape(info));
-
-  console.log(escapedUserDetails);
+  ].map((info: string | null) => escape(info || ''));
 
   // const wordsearch = new Wordsearch(words, difficulty);
   // wordsearch.makeGrid();

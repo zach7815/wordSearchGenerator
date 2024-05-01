@@ -2,7 +2,8 @@ import Select from 'react-select';
 import { useController, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { string, z } from 'zod';
-import { UserSubmission, Option, Field } from '../../../Types/index.js';
+import { Option, Field } from '../../../Types/index.js';
+import useAppContext from '../hooks/useContext.js';
 
 const headerOptions = [
   {
@@ -23,13 +24,9 @@ const schema = z.object({
   words: string(),
 });
 
-interface FormProps {
-  handleSave: (submission: UserSubmission) => void;
-  userSubmission: UserSubmission;
-  setUserSubmission: (submission: UserSubmission) => void;
-}
+export const Headers: React.FC = () => {
+  const { userSubmission, setUserSubmission } = useAppContext();
 
-export const Headers: React.FC<FormProps> = ({ userSubmission }) => {
   const { control, formState } = useForm({
     defaultValues: userSubmission,
     resolver: zodResolver(schema),
@@ -45,14 +42,25 @@ export const Headers: React.FC<FormProps> = ({ userSubmission }) => {
 
   return (
     <div>
-      <div >
+      <div>
         <h3>Choose your header design</h3>
         <div style={{ color: 'red' }}>{errors.authorName?.message} </div>
       </div>
       <div>
         <label>
           <p>Author</p>
-          <input type="text" />
+          <input
+            type="text"
+            required
+            onChange={(event) => {
+              const input = event.target.value;
+
+              setUserSubmission((prevUserOptions) => ({
+                ...prevUserOptions,
+                authorName: input,
+              }));
+            }}
+          />
         </label>
         <label>
           <p>choose what your header will contain</p>
@@ -64,7 +72,14 @@ export const Headers: React.FC<FormProps> = ({ userSubmission }) => {
               ) || null
             }
             onChange={(option) => {
-              handleSelectChange(option, headerOpt);
+              if (option) {
+                handleSelectChange(option, headerOpt);
+                console.log(option);
+                setUserSubmission((prevUserOptions) => ({
+                  ...prevUserOptions,
+                  title: option.value,
+                }));
+              } else return;
             }}
             options={headerOptions}
           />

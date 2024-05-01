@@ -2,24 +2,20 @@ import { FormEvent } from 'react';
 import { useMultistepForm } from '../hooks/useMultipageForm';
 import { Headers } from './ChooseHeaders';
 import { DifficultiesAndWords } from './difficultiesAndWordsInput';
-import { UserSubmission } from '../../../Types';
+import useAppContext from '../hooks/useContext';
+import { FormContainerProps } from '../../../Types';
 
-
-
-interface FormContainerProps {
-  userSubmission: UserSubmission;
-  setUserSubmission: React.Dispatch<React.SetStateAction<UserSubmission>>;
-}
-
-export function FormContainer({
-  userSubmission,
-  setUserSubmission,
-}: FormContainerProps): JSX.Element {
+export function FormContainer({ handleSave }: FormContainerProps) {
   const steps = [<Headers />, <DifficultiesAndWords />];
+  const { userSubmission } = useAppContext();
 
   function onSubmit(e: FormEvent) {
     e.preventDefault();
-    next();
+    if (isLastStep) {
+      handleSave(userSubmission);
+    } else {
+      next();
+    }
   }
 
   const { currentStepIndex, step, isFirstStep, isLastStep, back, next } =
