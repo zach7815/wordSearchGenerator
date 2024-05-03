@@ -8,7 +8,7 @@ import * as pkg from 'lodash';
 const { escape } = pkg;
 import { Wordsearch } from './classes/wordsearch.class.js';
 import dotenv = require('dotenv');
-import { log } from 'console';
+import { workerData } from 'worker_threads';
 
 dotenv.config();
 
@@ -35,23 +35,41 @@ app.use(cors());
 
 app.post('/api/WordsearchData', (req, res) => {
   const { submission }: { submission: UserSubmission } = req.body;
-  console.log(req.body);
   const { authorName, header, title, difficulty, words } = submission;
-
-  const escapedWords: string[] = words.map((word: string) => escape(word));
-  console.log(escapedWords);
+  const removedNullsOrBlanks = words.filter((word) => word !== null || '');
+  console.log(removedNullsOrBlanks);
+  const escapedWords: string[] = removedNullsOrBlanks.map((word: string) =>
+    escape(word)
+  );
   const escapedUserDetails: string[] = [
     authorName,
     header,
     title,
     difficulty,
   ].map((info: string | null) => escape(info || ''));
+  console.log(difficulty);
 
-  // const wordsearch = new Wordsearch(words, difficulty);
-  // wordsearch.makeGrid();
-  // wordsearch.placeWords();
-  // wordsearch.fillGrid();
-  // const finishedWordSearch = wordsearch.showGrid;
+  const wordsearch = new Wordsearch(words, difficulty);
+  wordsearch.makeGrid();
+  const answers = wordsearch.placeWords();
+  wordsearch.fillGrid();
+  const finishedWordSearch = wordsearch.showGrid;
+
+  const data = {
+    authorName: escapedUserDetails[0],
+    header: escapedUserDetails[1],
+    title: escapedUserDetails[2],
+    wordsearchData: finishedWordSearch,
+    answers: answers,
+    words: escapedWords,
+    level: escapedUserDetails[3],
+  };
+
+      const htmlWordSearch = ejs.render(wordSearchTemplate, data);
+      const htmlAnswerGrid = ejs.render(answersTemplate, data);
+      const wordSearchFileName = `${data.title}.html`;
+      const answerSheetFileName = `${data.title}_answers.html`;
+
   res.send('hello');
 });
 

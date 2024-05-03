@@ -1,9 +1,9 @@
 export class Wordsearch {
   private words: string[];
   private difficulty: { [key: string]: number } = {
-    easy: 12,
-    medium: 16,
-    hard: 20,
+    '10x10': 10,
+    '15x15': 15,
+    '20x20': 20,
   };
   private grid: string[][];
   private size: number;
