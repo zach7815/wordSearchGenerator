@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="./css/styles.css" />
+		<title>Easy</title>
+
+		<style type="text/css">
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
+
+			body {
+				display: flex;
+				flex-direction: column;
+				align-content: space-between;
+				justify-content: flex-start;
+			}
+
+			.container {
+				position: fixed;
+				width: 80%;
+				height: 900px;
+				left: 5rem;
+			}
+
+
+			   .header{
+                grid-template-columns: repeat(2,3fr);
+                grid-template-rows: repeat(2,1fr);
+                display: grid;
+				position: absolute;
+                width: 100%;
+                max-width: 816px;
+                justify-content: space-between;
+				grid-column-gap: 1rem;
+                margin: 1rem;
+            }
+
+            .class, .grade{
+                align-self: middle;
+                justify-self: end;
+                position: relative;
+                right:4rem
+            }
+
+			 .class{
+                right:5.8rem;
+            }
+
+			main {
+					display: flex;
+				justify-content: center;
+				align-items: center;
+				margin-bottom: 6rem;
+				margin-top: 4rem;
+				flex-direction: column;
+			}
+			table:first-of-type{
+				margin-bottom: 4rem;
+				height: 31rem;
+				margin-top:3rem;
+			}
+
+			table {
+				border: solid black 1px;
+				text-align: center;
+				width: 31rem;
+			}
+			table.noSpacing {
+				border-spacing: 0;
+				border-collapse: collapse;
+			}
+
+			.wordSearchTable {
+				text-align: center;
+				margin-top: 3rem;
+			}
+
+			caption {
+				caption-side: bottom;
+				padding: 1rem;
+			}
+			thead {
+				border-top: hidden;
+				border-left: hidden;
+				border-right: hidden;
+			}
+
+			th {
+				padding-bottom: 1rem;
+			}
+			.wordSearchMeta {
+				column-span: all;
+				text-align: center;
+			}
+
+			tr {
+				height: 5px;
+			}
+			tr:first-child {
+				border-top: solid black 1px;
+			}
+			td {
+				padding: -1rem;
+				text-align: center;
+				text-transform: capitalize;
+				font-size: 1rem;
+				height: 20px;
+				width: 20px;
+			}
+
+
+			.wordsTable {
+				display: flex;
+				justify-content: center;
+			}
+
+			.wordsTable table td {
+				border: hidden;
+			}
+
+			footer{
+				position:absolute;
+				bottom:3rem;
+			}
+
+		</style>
+	</head>
+
+	<body>
+		<div class="container">`</div>
+
+		<div class="header">
+<span class="name">Name:___________ (   )</span><span class="class">Class:_____</span>
+<span class="date">Date:___________</span><span class="grade">Grade:________</span>
+</div>
+		<main>
+			<table class="wordsearch">
+  
+    <tr>
+      
+        <td>R</td>
+      
+        <td>P</td>
+      
+        <td>L</td>
+      
+        <td>I</td>
+      
+        <td>T</td>
+      
+        <td>W</td>
+      
+        <td>W</td>
+      
+        <td>R</td>
+      
+        <td>O</td>
+      
+        <td>P</td>
+      
+        <td>L</td>
+      
+        <td>J</td>
+      
+        <td>H</td>
+      
+        <td>N</td>
+      
+        <td>P</td>
+      
+    </tr>
+  
+    <tr>
+      
+        <td>D</td>
+      
+        <td>N</td>
+      
+        <td>U</td>
+      
+        <td>B</td>
+      
+        <td>H</td>
+      
+        <td>Z</td>
+      
+        <td>I</td>
+      
+        <td>Q</td>
+      
+        <td>R</td>
+      
+        <td>T</td>
+      
+        <td>S</td>
+      
+        <td>G</td>
+      
+        <td>S</td>
+      
+        <td>F</td>
+      
+        <td>S</td>
+      
+    </tr>
+  
+    <tr>
+      
+        <td>F</td>
+      
+        <td>L</td>
+      
+        <td>K</td>
+      
+        <td>K</td>
+      
+        <td>H</td>
+      
+        <td>A</td>
+      
+        <td>I</td>
+      
+        <td>T</td>
+      
+        <td>E</td>
+      
+        <td>O</td>
+      
+        <td>P</td>
+      
+        <td>R</td>
+      
+        <td>E</td>
+      
+        <td>Y</td>
+      
+        <td>D</td>
+      
+    </tr>
+  
+    <tr>
+      
+        <td>R</td>
+      
+        <td>G</td>
+      
+        <td>G</td>
+      
+        <td>E</td>
+      
+        <td>S</td>
+      
+        <td>D</td>
+      
+        <td>H</td>
+      
+        <td>R</td>
+      
+        <td>N</td>
+      
+        <td>M</td>
+      
+        <td>G</td>
+      
+        <td>Q</td>
+      
+        <td>J</td>
+      
+        <td>T</td>
+      
+        <td>K</td>
+      
+    </tr>
+  
+    <tr>
+      
+        <td>C</td>
+      
+        <td>R</td>
+      
+        <td>E</td>
+      
+        <td>A</td>
+      
+        <td>T</td>
+      
+        <td>E</td>
+      
+        <td>N</td>
+      
+        <td>L</td>
+      
+        <td>Q</td>
+      
+        <td>O</td>
+      
+        <td>M</td>
+      
+        <td>Q</td>
+      
+        <td>H</td>
+      
+        <td>C</td>
+      
+        <td>R</td>
+      
+    </tr>
+  
+    <tr>
+      
+        <td>O</td>
+      
+        <td>V</td>
+      
+        <td>C</td>
+      
+        <td>G</td>
+      
+        <td>K</td>
+      
+        <td>E</td>
+      
+        <td>Q</td>
+      
+        <td>B</td>
+      
+        <td>R</td>
+      
+        <td>K</td>
+      
+        <td>X</td>
+      
+        <td>I</td>
+      
+        <td>G</td>
+      
+        <td>L</td>
+      
+        <td>R</td>
+      
+    </tr>
+  
+    <tr>
+      
+        <td>B</td>
+      
+        <td>U</td>
+      
+        <td>Z</td>
+      
+        <td>Z</td>
+      
+        <td>I</td>
+      
+        <td>Q</td>
+      
+        <td>T</td>
+      
+        <td>P</td>
+      
+        <td>E</td>
+      
+        <td>M</td>
+      
+        <td>K</td>
+      
+        <td>L</td>
+      
+        <td>C</td>
+      
+        <td>W</td>
+      
+        <td>H</td>
+      
+    </tr>
+  
+    <tr>
+      
+        <td>M</td>
+      
+        <td>I</td>
+      
+        <td>I</td>
+      
+        <td>F</td>
+      
+        <td>P</td>
+      
+        <td>D</td>
+      
+        <td>N</td>
+      
+        <td>C</td>
+      
+        <td>K</td>
+      
+        <td>V</td>
+      
+        <td>G</td>
+      
+        <td>P</td>
+      
+        <td>B</td>
+      
+        <td>K</td>
+      
+        <td>I</td>
+      
+    </tr>
+  
+    <tr>
+      
+        <td>V</td>
+      
+        <td>Y</td>
+      
+        <td>V</td>
+      
+        <td>W</td>
+      
+        <td>O</td>
+      
+        <td>R</td>
+      
+        <td>M</td>
+      
+        <td>O</td>
+      
+        <td>K</td>
+      
+        <td>R</td>
+      
+        <td>B</td>
+      
+        <td>L</td>
+      
+        <td>F</td>
+      
+        <td>P</td>
+      
+        <td>F</td>
+      
+    </tr>
+  
+    <tr>
+      
+        <td>Y</td>
+      
+        <td>B</td>
+      
+        <td>M</td>
+      
+        <td>T</td>
+      
+        <td>X</td>
+      
+        <td>G</td>
+      
+        <td>B</td>
+      
+        <td>T</td>
+      
+        <td>B</td>
+      
+        <td>Y</td>
+      
+        <td>W</td>
+      
+        <td>E</td>
+      
+        <td>T</td>
+      
+        <td>Q</td>
+      
+        <td>V</td>
+      
+    </tr>
+  
+    <tr>
+      
+        <td>F</td>
+      
+        <td>P</td>
+      
+        <td>C</td>
+      
+        <td>Z</td>
+      
+        <td>W</td>
+      
+        <td>G</td>
+      
+        <td>F</td>
+      
+        <td>W</td>
+      
+        <td>V</td>
+      
+        <td>D</td>
+      
+        <td>S</td>
+      
+        <td>E</td>
+      
+        <td>E</td>
+      
+        <td>M</td>
+      
+        <td>J</td>
+      
+    </tr>
+  
+    <tr>
+      
+        <td>U</td>
+      
+        <td>V</td>
+      
+        <td>P</td>
+      
+        <td>X</td>
+      
+        <td>E</td>
+      
+        <td>O</td>
+      
+        <td>T</td>
+      
+        <td>S</td>
+      
+        <td>N</td>
+      
+        <td>Z</td>
+      
+        <td>L</td>
+      
+        <td>I</td>
+      
+        <td>M</td>
+      
+        <td>G</td>
+      
+        <td>G</td>
+      
+    </tr>
+  
+    <tr>
+      
+        <td>Q</td>
+      
+        <td>M</td>
+      
+        <td>O</td>
+      
+        <td>K</td>
+      
+        <td>T</td>
+      
+        <td>B</td>
+      
+        <td>C</td>
+      
+        <td>P</td>
+      
+        <td>T</td>
+      
+        <td>C</td>
+      
+        <td>G</td>
+      
+        <td>B</td>
+      
+        <td>N</td>
+      
+        <td>Z</td>
+      
+        <td>Q</td>
+      
+    </tr>
+  
+    <tr>
+      
+        <td>F</td>
+      
+        <td>G</td>
+      
+        <td>R</td>
+      
+        <td>W</td>
+      
+        <td>K</td>
+      
+        <td>C</td>
+      
+        <td>U</td>
+      
+        <td>L</td>
+      
+        <td>C</td>
+      
+        <td>F</td>
+      
+        <td>L</td>
+      
+        <td>O</td>
+      
+        <td>Q</td>
+      
+        <td>B</td>
+      
+        <td>A</td>
+      
+    </tr>
+  
+    <tr>
+      
+        <td>S</td>
+      
+        <td>R</td>
+      
+        <td>H</td>
+      
+        <td>P</td>
+      
+        <td>M</td>
+      
+        <td>T</td>
+      
+        <td>M</td>
+      
+        <td>F</td>
+      
+        <td>C</td>
+      
+        <td>W</td>
+      
+        <td>N</td>
+      
+        <td>U</td>
+      
+        <td>K</td>
+      
+        <td>J</td>
+      
+        <td>O</td>
+      
+    </tr>
+  
+</table>
+
+
+			<table width="auto">
+    <thead>
+        <tr>
+            <th colspan="5">Can you find the words below</th>
+        </tr>
+    </thead>
+    <tbody>
+        
+        <tr>
+            
+            <td>
+                Buzz
+            </td padding="1rem">
+            
+            <td>
+                Seem
+            </td padding="1rem">
+            
+            <td>
+                Create
+            </td padding="1rem">
+            
+            <td>
+                Go
+            </td padding="1rem">
+            
+            <td>
+                
+            </td padding="1rem">
+            
+        </tr>
+        
+        <tr>
+            
+            <td>
+                
+            </td padding="1rem">
+            
+            <td>
+                
+            </td padding="1rem">
+            
+            <td>
+                
+            </td padding="1rem">
+            
+            <td>
+                
+            </td padding="1rem">
+            
+            <td>
+                
+            </td padding="1rem">
+            
+        </tr>
+        
+        <tr>
+            
+            <td>
+                
+            </td padding="1rem">
+            
+            <td>
+                
+            </td padding="1rem">
+            
+            <td>
+                
+            </td padding="1rem">
+            
+            <td>
+                
+            </td padding="1rem">
+            
+            <td>
+                
+            </td padding="1rem">
+            
+        </tr>
+        
+        <tr>
+            
+            <td>
+                
+            </td padding="1rem">
+            
+            <td>
+                
+            </td padding="1rem">
+            
+            <td>
+                
+            </td padding="1rem">
+            
+            <td>
+                
+            </td padding="1rem">
+            
+            <td>
+                
+            </td padding="1rem">
+            
+        </tr>
+        
+        <tr>
+            
+            <td>
+                
+            </td padding="1rem">
+            
+            <td>
+                
+            </td padding="1rem">
+            
+            <td>
+                
+            </td padding="1rem">
+            
+            <td>
+                
+            </td padding="1rem">
+            
+            <td>
+                
+            </td padding="1rem">
+            
+        </tr>
+        
+    </tbody>
+</table>
+		</aside>
+		<footer><span> A word search created by Test</span> from the website wordSearchGen.com </footer>
+	</body>
+</html>

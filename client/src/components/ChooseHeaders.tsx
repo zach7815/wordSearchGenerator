@@ -62,6 +62,22 @@ export const Headers: React.FC = () => {
             }}
           />
         </label>
+
+        <label>
+          <p>Title</p>
+          <input
+            type="text"
+            required
+            onChange={(event) => {
+              const input = event.target.value;
+
+              setUserSubmission((prevUserOptions) => ({
+                ...prevUserOptions,
+                title: input,
+              }));
+            }}
+          />
+        </label>
         <label>
           <p>choose what your header will contain</p>
           <Select
@@ -77,7 +93,7 @@ export const Headers: React.FC = () => {
                 console.log(option);
                 setUserSubmission((prevUserOptions) => ({
                   ...prevUserOptions,
-                  title: option.value,
+                  header: option.value,
                 }));
               } else return;
             }}

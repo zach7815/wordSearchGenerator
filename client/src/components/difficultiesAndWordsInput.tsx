@@ -12,15 +12,12 @@ const difficultyOptions = [
 ];
 
 const schema = z.object({
-  // authorName: string().min(4),
-  // header: string().min(4, { message: 'please select an option' }),
-  // title: string().min(4).max(25),
   difficulty: string().min(4, { message: 'please select an option' }),
   words: string().array().nonempty(),
 });
 
 export const DifficultiesAndWords: React.FC = () => {
-  const { register, control, formState } = useForm({
+  const { register, control } = useForm({
     resolver: zodResolver(schema),
   });
 
@@ -30,7 +27,6 @@ export const DifficultiesAndWords: React.FC = () => {
   const [wordLimitMessage, setWordLimitMessage] = useState<string>('');
   const [wordLimit, setWordLimit] = useState<number>(0);
   const [shouldAnimate, setShouldAnimate] = useState<boolean>(false);
-  const { errors } = formState;
   const { field: Field } = useController({ name: 'header', control });
 
   const handleSelectChange = (option: Option | null, field: Field) => {

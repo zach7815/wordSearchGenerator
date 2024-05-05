@@ -1,14 +1,11 @@
 import puppeteer from 'puppeteer';
-import { readFileSync } from 'fs';
+import { readFileSync, writeFileSync } from 'fs';
 
-export const htmlToPDF = async (htmlFile: string) => {
+export const htmlToPDF = async (htmlFile: string, title: string) => {
   const regex = /New (.+?)\.html$/;
   const browser = await puppeteer.launch({
     headless: 'new',
     defaultViewport: null,
-    // `headless: true` (default) enables old Headless;
-    // `headless: 'new'` enables new Headless;
-    // `headless: false` enables “headful” mode.
   });
   const page = await browser.newPage();
 
@@ -19,17 +16,19 @@ export const htmlToPDF = async (htmlFile: string) => {
   await page.emulateMediaType('screen');
 
   await page.setViewport({ width: 800, height: 600 });
-  const match = RegExp(regex).exec(htmlFile);
-  await page.pdf({
-    path: match ? `${match[1]}.pdf` : '',
+
+  const pdfBuffer = await page.pdf({
     format: 'letter',
     margin: {
-      top: '0.5in',
-      right: '0.5in',
-      bottom: '0.5in',
-      left: '0.5in',
+      top: '0.1in',
+      right: '0.1in',
+      bottom: '0.1in',
+      left: '0.1in',
     },
   });
 
   await browser.close();
+
+  const pdfFileName = `${title}.pdf`;
+  writeFileSync(`./pdfOutput/${pdfFileName}`, pdfBuffer);
 };

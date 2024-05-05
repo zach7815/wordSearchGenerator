@@ -1,36 +1,26 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.htmlToPDF = void 0;
-const puppeteer_1 = __importDefault(require("puppeteer"));
-const fs_1 = require("fs");
-const htmlToPDF = async (htmlFile) => {
+import puppeteer from 'puppeteer';
+import { readFileSync, writeFileSync } from 'fs';
+export const htmlToPDF = async (htmlFile, title) => {
     const regex = /New (.+?)\.html$/;
-    const browser = await puppeteer_1.default.launch({
+    const browser = await puppeteer.launch({
         headless: 'new',
         defaultViewport: null,
-        // `headless: true` (default) enables old Headless;
-        // `headless: 'new'` enables new Headless;
-        // `headless: false` enables “headful” mode.
     });
     const page = await browser.newPage();
-    const html = (0, fs_1.readFileSync)(htmlFile, 'utf-8');
+    const html = readFileSync(htmlFile, 'utf-8');
     await page.setContent(html, { waitUntil: 'domcontentloaded' });
     await page.emulateMediaType('screen');
     await page.setViewport({ width: 800, height: 600 });
-    const match = RegExp(regex).exec(htmlFile);
-    await page.pdf({
-        path: match ? `${match[1]}.pdf` : '',
+    const pdfBuffer = await page.pdf({
         format: 'letter',
         margin: {
-            top: '0.5in',
-            right: '0.5in',
-            bottom: '0.5in',
-            left: '0.5in',
+            top: '0.1in',
+            right: '0.1in',
+            bottom: '0.1in',
+            left: '0.1in',
         },
     });
     await browser.close();
+    const pdfFileName = `${title}.pdf`;
+    writeFileSync(`./pdfOutput/${pdfFileName}`, pdfBuffer);
 };
-exports.htmlToPDF = htmlToPDF;

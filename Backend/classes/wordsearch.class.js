@@ -1,17 +1,15 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Wordsearch = void 0;
-class Wordsearch {
+export class Wordsearch {
+    words;
+    difficulty = {
+        '10x10': 10,
+        '15x15': 15,
+        '20x20': 20,
+    };
+    grid;
+    size;
+    unusedWords;
+    highlightedItems = [];
     constructor(words, level) {
-        this.difficulty = {
-            '10x10': 10,
-            '15x15': 15,
-            '20x20': 20,
-        };
-        this.highlightedItems = [];
-        this.random = (min, max) => {
-            return Math.floor(Math.random() * (max - min + 1)) + min;
-        };
         this.grid = [[]];
         this.words = words;
         this.size = this.difficulty[level];
@@ -21,6 +19,9 @@ class Wordsearch {
         this.grid = Array.from(Array(this.size), () => new Array(this.size).fill(null));
         return this.grid;
     }
+    random = (min, max) => {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    };
     fillGrid() {
         const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
         const gridCopy = this.grid.map((row) => [...row]);
@@ -118,5 +119,3 @@ class Wordsearch {
         return this.highlightedItems;
     }
 }
-exports.Wordsearch = Wordsearch;
-//** For Testing purposes- to remove before deploy */

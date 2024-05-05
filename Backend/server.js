@@ -1,36 +1,16 @@
-"use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const express = require("express");
+import express from 'express';
 const app = express();
-const cors = require("cors");
-const bodyParser = require("body-parser");
-const pkg = __importStar(require("lodash"));
+import cors from 'cors';
+import bodyParser from 'body-parser';
+import * as ejs from 'ejs';
+import pkg from 'lodash';
 const { escape } = pkg;
-const wordsearch_class_js_1 = require("./classes/wordsearch.class.js");
-const dotenv = require("dotenv");
+import { Wordsearch } from './classes/wordsearch.class.js';
+import dotenv from 'dotenv';
+import { readFileSync, writeFileSync } from 'fs';
+import { htmlToPDF } from './pdfCreation.js';
+import { log } from 'console';
+import { mergePDFS } from './puppeteerFunctions/mergePDF.js';
 dotenv.config();
 app.use(bodyParser.json({ limit: '100mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
@@ -45,8 +25,9 @@ app.use(cors());
 app.post('/api/WordsearchData', (req, res) => {
     const { submission } = req.body;
     const { authorName, header, title, difficulty, words } = submission;
+    log('The title is', title);
+    log('The header is', header);
     const removedNullsOrBlanks = words.filter((word) => word !== null || '');
-    console.log(removedNullsOrBlanks);
     const escapedWords = removedNullsOrBlanks.map((word) => escape(word));
     const escapedUserDetails = [
         authorName,
@@ -54,13 +35,40 @@ app.post('/api/WordsearchData', (req, res) => {
         title,
         difficulty,
     ].map((info) => escape(info || ''));
-    console.log(difficulty);
-    const wordsearch = new wordsearch_class_js_1.Wordsearch(words, difficulty);
+    const wordsearch = new Wordsearch(escapedWords, difficulty);
     wordsearch.makeGrid();
-    wordsearch.placeWords();
+    const answers = wordsearch.placeWords();
     wordsearch.fillGrid();
     const finishedWordSearch = wordsearch.showGrid;
-    console.log(finishedWordSearch);
+    const data = {
+        authorName: escapedUserDetails[0],
+        header: escapedUserDetails[1],
+        title: escapedUserDetails[2],
+        wordSearchData: finishedWordSearch,
+        answers: answers,
+        words: escapedWords,
+        level: escapedUserDetails[3],
+    };
+    const wordSearchTemplate = readFileSync('./views/wordsearch.ejs', 'utf-8');
+    const answersTemplate = readFileSync('./views/answers.ejs', 'utf-8');
+    const htmlWordSearch = ejs.render(wordSearchTemplate, data);
+    const htmlAnswerGrid = ejs.render(answersTemplate, data);
+    const wordSearchFileName = `${data.title}.html`;
+    const answerSheetFileName = `${data.title}_answers.html`;
+    try {
+        writeFileSync(`./html-templates/${wordSearchFileName}`, htmlWordSearch, 'utf8');
+        writeFileSync(`./html-templates/${answerSheetFileName}`, htmlAnswerGrid, 'utf8');
+        (async function convertToPDF() {
+            await htmlToPDF(`./html-templates/${wordSearchFileName}`, title);
+            await htmlToPDF(`./html-templates/${answerSheetFileName}`, title + 'answers');
+        })();
+    }
+    catch (error) {
+        console.log(error);
+    }
+    finally {
+        mergePDFS(`./pdfOutput/${title}.pdf`, `./pdfOutput/${title}answers.pdf`);
+    }
     res.send('hello');
 });
 const PORT = process.env.PORT ?? 3000;

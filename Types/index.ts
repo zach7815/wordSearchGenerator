@@ -1,7 +1,7 @@
 export interface UserSubmission {
   authorName: string;
   header: string;
-  title: string | null;
+  title: string;
   difficulty: string;
   words: string[];
 }

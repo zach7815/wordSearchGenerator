@@ -1,14 +1,17 @@
-import express = require('express');
+import express from 'express';
 const app = express();
-import cors = require('cors');
+import cors from 'cors';
 import { UserSubmission } from '../Types/index';
-import bodyParser = require('body-parser');
+import bodyParser from 'body-parser';
 import * as ejs from 'ejs';
-import * as pkg from 'lodash';
+import pkg from 'lodash';
 const { escape } = pkg;
 import { Wordsearch } from './classes/wordsearch.class.js';
-import dotenv = require('dotenv');
-import { workerData } from 'worker_threads';
+import dotenv from 'dotenv';
+import { readFileSync, writeFileSync } from 'fs';
+import { htmlToPDF } from './pdfCreation.js';
+import { log } from 'console';
+import { mergePDFS } from './puppeteerFunctions/mergePDF.js';
 
 dotenv.config();
 
@@ -36,8 +39,9 @@ app.use(cors());
 app.post('/api/WordsearchData', (req, res) => {
   const { submission }: { submission: UserSubmission } = req.body;
   const { authorName, header, title, difficulty, words } = submission;
+  log('The title is', title);
+  log('The header is', header);
   const removedNullsOrBlanks = words.filter((word) => word !== null || '');
-  console.log(removedNullsOrBlanks);
   const escapedWords: string[] = removedNullsOrBlanks.map((word: string) =>
     escape(word)
   );
@@ -47,9 +51,8 @@ app.post('/api/WordsearchData', (req, res) => {
     title,
     difficulty,
   ].map((info: string | null) => escape(info || ''));
-  console.log(difficulty);
 
-  const wordsearch = new Wordsearch(words, difficulty);
+  const wordsearch = new Wordsearch(escapedWords, difficulty);
   wordsearch.makeGrid();
   const answers = wordsearch.placeWords();
   wordsearch.fillGrid();
@@ -59,16 +62,42 @@ app.post('/api/WordsearchData', (req, res) => {
     authorName: escapedUserDetails[0],
     header: escapedUserDetails[1],
     title: escapedUserDetails[2],
-    wordsearchData: finishedWordSearch,
+    wordSearchData: finishedWordSearch,
     answers: answers,
     words: escapedWords,
     level: escapedUserDetails[3],
   };
 
-      const htmlWordSearch = ejs.render(wordSearchTemplate, data);
-      const htmlAnswerGrid = ejs.render(answersTemplate, data);
-      const wordSearchFileName = `${data.title}.html`;
-      const answerSheetFileName = `${data.title}_answers.html`;
+  const wordSearchTemplate = readFileSync('./views/wordsearch.ejs', 'utf-8');
+  const answersTemplate = readFileSync('./views/answers.ejs', 'utf-8');
+  const htmlWordSearch = ejs.render(wordSearchTemplate, data);
+  const htmlAnswerGrid = ejs.render(answersTemplate, data);
+  const wordSearchFileName = `${data.title}.html`;
+  const answerSheetFileName = `${data.title}_answers.html`;
+
+  try {
+    writeFileSync(
+      `./html-templates/${wordSearchFileName}`,
+      htmlWordSearch,
+      'utf8'
+    );
+    writeFileSync(
+      `./html-templates/${answerSheetFileName}`,
+      htmlAnswerGrid,
+      'utf8'
+    );
+    (async function convertToPDF() {
+      await htmlToPDF(`./html-templates/${wordSearchFileName}`, title);
+      await htmlToPDF(
+        `./html-templates/${answerSheetFileName}`,
+        title + 'answers'
+      );
+    })();
+  } catch (error) {
+    console.log(error);
+  } finally {
+    mergePDFS(`./pdfOutput/${title}.pdf`, `./pdfOutput/${title}answers.pdf`);
+  }
 
   res.send('hello');
 });

@@ -1,8 +1,9 @@
 {
   "compilerOptions": {
     "composite": true,
-    "skipLibCheck": true,
-    "module": "ESNext",
+    "skipLibCheck": false,
+    "target": "ES2015",
+    "module": "Preserve",
     "moduleResolution": "bundler",
     "allowSyntheticDefaultImports": true,
     "strict": true

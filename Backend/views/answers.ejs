@@ -23,31 +23,30 @@
 
 			.container {
 				position: fixed;
-				border: solid black 2px;
-				border-radius: 5px;
-				margin-top: 3rem;
 				width: 80%;
 				height: 900px;
 				left: 5rem;
 			}
 
-			h1 {
-				text-align: center;
-				margin: 1rem;
-				padding: 1rem;
-				bottom: 38.75rem;
-				z-index: 5;
-				left: 49rem;
-			}
-			h1 span {
-				border: solid black 1px;
-				border-radius: 10px;
-				padding: 1rem 2rem;
-				background-color: #fff;
-			}
+
+			   .header{
+                grid-template-columns: repeat(2,1fr);
+                grid-template-rows: repeat(2,1fr);
+                display: grid;
+                justify-content: center;
+                width: 40%;
+                position: fixed;
+                left: 25rem;
+            }
+
+            .header span{
+                width: 100px;
+
+            }
+
 
 			main {
-					display: flex;
+				display: flex;
 				justify-content: center;
 				align-items: center;
 				margin-bottom: 6rem;
@@ -56,18 +55,16 @@
 			}
 			table:first-of-type{
 				margin-bottom: 4rem;
+				height: 31rem;
 			}
 
 			table {
 				border: solid black 1px;
 				text-align: center;
-				table-layout: fixed;
 				width: 31rem;
 			}
-			table.noSpacing {
-				border-spacing: 0;
-				border-collapse: collapse;
-			}
+
+
 
 			.wordSearchTable {
 				text-align: center;
@@ -103,6 +100,9 @@
 				text-align: center;
 				text-transform: capitalize;
 				font-size: 1rem;
+				height: 20px;
+				width: 20px;
+				border: solid black 1px;
 			}
 
 
@@ -111,9 +111,9 @@
 				justify-content: center;
 			}
 
-			.wordsTable table td {
+			/* .wordsTable table td {
 				border: hidden;
-			}
+			} */
 
 			footer{
 				position:absolute;
@@ -125,14 +125,22 @@
 
 	<body>
 		<div class="container">`</div>
-		<h1><span><%=title%></span></h1>
+		<div class="header">
+
+<span class="name">Name:___________</span><span class="class">Class:_________________</span>
+
+
+<span class="date">Date:___________</span><span class="grade">Grade:_________________</span>
+
+
+</div>
 		<main>
-			<table>
+			<table >
   <%
-  for (let i = 0; i < 12; i++) { %>
+  for (let i = 0; i < wordSearchData.length; i++) { %>
     <tr>
       <% for (let j = 0; j < answers[i].length; j++) { %>
-        <td><%= answers[i][j] %></td>
+        <td><%= answers[i][j] || " "%></td>
       <% } %>
     </tr>
   <% } %>
@@ -140,23 +148,23 @@
 
 
 			<table>
-				<thead>
-					<tr>
-						<th colspan=<%= words.length %>>Can you finds the words below</th>
-					</tr>
-				</thead>
-				<tbody>
-				<%
-				 for (let i=0; i< words.length; i++ ) { %>
-					<% let wordsInRow=0; %>
-
-
-						<td>
-							<%=words[i]%>
-						</td>
-						<% } %>
-				</tbody>
-			</table>
+    <thead>
+        <tr>
+            <th colspan=5>Can you find the words below</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% for (let i = 0; i < 5; i++) { %>
+        <tr>
+            <% for (let j = 0; j < 5; j++) { %>
+            <td padding="1rem">
+                <%= words[i * 5 + j] %>
+            </td>
+            <% } %>
+        </tr>
+        <% } %>
+    </tbody>
+</table>
 		</aside>
 		<footer><span> A word search created by <%=authorName%></span> from the website wordSearchGen.com </footer>
 	</body>
