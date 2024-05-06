@@ -62,12 +62,14 @@ app.post('/api/WordsearchData', (req, res) => {
             await htmlToPDF(`./html-templates/${wordSearchFileName}`, title);
             await htmlToPDF(`./html-templates/${answerSheetFileName}`, title + 'answers');
         })();
+        (async function () {
+            await mergePDFS(`./pdfOutput/${title}.pdf`, `./pdfOutput/${title}answers.pdf`);
+        })();
     }
     catch (error) {
         console.log(error);
     }
     finally {
-        mergePDFS(`./pdfOutput/${title}.pdf`, `./pdfOutput/${title}answers.pdf`);
     }
     res.send('hello');
 });
