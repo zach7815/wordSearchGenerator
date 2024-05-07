@@ -9,8 +9,8 @@ import { Wordsearch } from './classes/wordsearch.class.js';
 import dotenv from 'dotenv';
 import { readFileSync, writeFileSync } from 'fs';
 import { htmlToPDF } from './pdfCreation.js';
-import { log } from 'console';
 import { mergePDFS } from './puppeteerFunctions/mergePDF.js';
+import { emptyDirectory } from './utils/emptyDirectories.js';
 dotenv.config();
 app.use(bodyParser.json({ limit: '100mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
@@ -25,8 +25,6 @@ app.use(cors());
 app.post('/api/WordsearchData', (req, res) => {
     const { submission } = req.body;
     const { authorName, header, title, difficulty, words } = submission;
-    log('The title is', title);
-    log('The header is', header);
     const removedNullsOrBlanks = words.filter((word) => word !== null || '');
     const escapedWords = removedNullsOrBlanks.map((word) => escape(word));
     const escapedUserDetails = [
@@ -49,6 +47,7 @@ app.post('/api/WordsearchData', (req, res) => {
         words: escapedWords,
         level: escapedUserDetails[3],
     };
+    console.log(data.title);
     const wordSearchTemplate = readFileSync('./views/wordsearch.ejs', 'utf-8');
     const answersTemplate = readFileSync('./views/answers.ejs', 'utf-8');
     const htmlWordSearch = ejs.render(wordSearchTemplate, data);
@@ -61,10 +60,14 @@ app.post('/api/WordsearchData', (req, res) => {
         (async function convertToPDF() {
             await htmlToPDF(`./html-templates/${wordSearchFileName}`, title);
             await htmlToPDF(`./html-templates/${answerSheetFileName}`, title + 'answers');
-        })();
-        (async function () {
+        })()
+            .then(async () => {
             await mergePDFS(`./pdfOutput/${title}.pdf`, `./pdfOutput/${title}answers.pdf`);
-        })();
+        })
+            .then(() => {
+            emptyDirectory('./html-templates');
+            emptyDirectory('./pdfOutput');
+        });
     }
     catch (error) {
         console.log(error);

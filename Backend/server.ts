@@ -12,6 +12,7 @@ import { readFileSync, writeFileSync } from 'fs';
 import { htmlToPDF } from './pdfCreation.js';
 import { log } from 'console';
 import { mergePDFS } from './puppeteerFunctions/mergePDF.js';
+import { emptyDirectory } from './utils/emptyDirectories.js';
 
 dotenv.config();
 
@@ -39,8 +40,7 @@ app.use(cors());
 app.post('/api/WordsearchData', (req, res) => {
   const { submission }: { submission: UserSubmission } = req.body;
   const { authorName, header, title, difficulty, words } = submission;
-  log('The title is', title);
-  log('The header is', header);
+
   const removedNullsOrBlanks = words.filter((word) => word !== null || '');
   const escapedWords: string[] = removedNullsOrBlanks.map((word: string) =>
     escape(word)
@@ -67,6 +67,7 @@ app.post('/api/WordsearchData', (req, res) => {
     words: escapedWords,
     level: escapedUserDetails[3],
   };
+  console.log(data.title);
 
   const wordSearchTemplate = readFileSync('./views/wordsearch.ejs', 'utf-8');
   const answersTemplate = readFileSync('./views/answers.ejs', 'utf-8');
@@ -92,13 +93,17 @@ app.post('/api/WordsearchData', (req, res) => {
         `./html-templates/${answerSheetFileName}`,
         title + 'answers'
       );
-    })();
-    (async function () {
-      await mergePDFS(
-        `./pdfOutput/${title}.pdf`,
-        `./pdfOutput/${title}answers.pdf`
-      );
-    })();
+    })()
+      .then(async () => {
+        await mergePDFS(
+          `./pdfOutput/${title}.pdf`,
+          `./pdfOutput/${title}answers.pdf`
+        );
+      })
+      .then(() => {
+        emptyDirectory('./html-templates');
+        emptyDirectory('./pdfOutput');
+      });
   } catch (error) {
     console.log(error);
   } finally {
