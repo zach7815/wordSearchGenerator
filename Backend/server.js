@@ -11,6 +11,8 @@ import { readFileSync, writeFileSync } from 'fs';
 import { htmlToPDF } from './pdfCreation.js';
 import { mergePDFS } from './puppeteerFunctions/mergePDF.js';
 import { emptyDirectory } from './utils/emptyDirectories.js';
+import path, { dirname, join } from 'path';
+import { fileURLToPath } from 'url';
 dotenv.config();
 app.use(bodyParser.json({ limit: '100mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
@@ -22,6 +24,11 @@ app.use((req, res, next) => {
     next();
 });
 app.use(cors());
+const currentModulePath = fileURLToPath(import.meta.url);
+const currentDirectory = dirname(currentModulePath);
+const viewsDirectory = join(currentDirectory, 'views');
+app.set('views', viewsDirectory);
+app.set('view engine', 'ejs');
 app.post('/api/WordsearchData', (req, res) => {
     const { submission } = req.body;
     const { authorName, header, title, difficulty, words } = submission;
@@ -32,12 +39,14 @@ app.post('/api/WordsearchData', (req, res) => {
         header,
         title,
         difficulty,
-    ].map((info) => escape(info || ''));
+    ].map((info) => escape(info ?? ''));
     const wordsearch = new Wordsearch(escapedWords, difficulty);
     wordsearch.makeGrid();
     const answers = wordsearch.placeWords();
     wordsearch.fillGrid();
     const finishedWordSearch = wordsearch.showGrid;
+    const headerPath = path.resolve('./views/partials/header.ejs');
+    const wordSearchTemplate = readFileSync(join(viewsDirectory, 'wordsearch.ejs'), 'utf-8');
     const data = {
         authorName: escapedUserDetails[0],
         header: escapedUserDetails[1],
@@ -47,11 +56,12 @@ app.post('/api/WordsearchData', (req, res) => {
         words: escapedWords,
         level: escapedUserDetails[3],
     };
-    console.log(data.title);
-    const wordSearchTemplate = readFileSync('./views/wordsearch.ejs', 'utf-8');
-    const answersTemplate = readFileSync('./views/answers.ejs', 'utf-8');
-    const htmlWordSearch = ejs.render(wordSearchTemplate, data);
-    const htmlAnswerGrid = ejs.render(answersTemplate, data);
+    const answersTemplate = readFileSync(join(viewsDirectory, 'answers.ejs'), 'utf-8');
+    const htmlWordSearch = ejs.render(wordSearchTemplate, {
+        headerPath,
+        ...data,
+    });
+    const htmlAnswerGrid = ejs.render(answersTemplate, { headerPath, ...data });
     const wordSearchFileName = `${data.title}.html`;
     const answerSheetFileName = `${data.title}_answers.html`;
     try {
