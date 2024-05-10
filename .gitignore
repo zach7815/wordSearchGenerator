@@ -133,3 +133,6 @@ dist
 .pdf
 .html
 .DS_Store
+Backend/finalPdf
+Backend/html-templates
+Backend/pdfOutput

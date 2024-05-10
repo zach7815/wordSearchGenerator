@@ -134,7 +134,20 @@
 
 	<body>
 		<div class="container"></div>
-		<%- include(headerPath) -%>
+		<% if (header==="name, class, date and grade") { %>
+			<%- include(headerPaths.nameDateClassGradePath) -%>
+		<% } %>
+<% if (header==="name, class and date") { %>
+			<%- include(headerPaths.nameDateClassPath) -%>
+		<% } %>
+		<% if (header==="name and date") { %>
+		<%- include(headerPaths.nameDatePath) -%>
+		<% } %>
+		<% if (header==="name") { %>
+		 <%- include(headerPaths.namePath) -%>
+		<% } %>
+
+
 		<main>
 			<h1><%=title%></h1>
 			<table class="wordsearch">

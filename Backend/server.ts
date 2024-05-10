@@ -15,6 +15,7 @@ import { mergePDFS } from './puppeteerFunctions/mergePDF.js';
 import { emptyDirectory } from './utils/emptyDirectories.js';
 import path, { dirname, join } from 'path';
 import { fileURLToPath, URL } from 'url';
+import { headerPaths } from './utils/paths.js';
 
 dotenv.config();
 
@@ -45,7 +46,6 @@ const viewsDirectory = join(currentDirectory, 'views');
 app.set('views', viewsDirectory);
 app.set('view engine', 'ejs');
 
-
 app.post('/api/WordsearchData', (req, res) => {
   const { submission }: { submission: UserSubmission } = req.body;
   const { authorName, header, title, difficulty, words } = submission;
@@ -67,7 +67,6 @@ app.post('/api/WordsearchData', (req, res) => {
   wordsearch.fillGrid();
   const finishedWordSearch = wordsearch.showGrid;
 
-  const headerPath = path.resolve('./views/partials/header.ejs');
   const wordSearchTemplate = readFileSync(
     join(viewsDirectory, 'wordsearch.ejs'),
     'utf-8'
@@ -88,10 +87,10 @@ app.post('/api/WordsearchData', (req, res) => {
     'utf-8'
   );
   const htmlWordSearch = ejs.render(wordSearchTemplate, {
-    headerPath,
+    headerPaths,
     ...data,
   });
-  const htmlAnswerGrid = ejs.render(answersTemplate, { headerPath, ...data });
+  const htmlAnswerGrid = ejs.render(answersTemplate, { ...data });
   const wordSearchFileName = `${data.title}.html`;
   const answerSheetFileName = `${data.title}_answers.html`;
 

@@ -11,8 +11,9 @@ import { readFileSync, writeFileSync } from 'fs';
 import { htmlToPDF } from './pdfCreation.js';
 import { mergePDFS } from './puppeteerFunctions/mergePDF.js';
 import { emptyDirectory } from './utils/emptyDirectories.js';
-import path, { dirname, join } from 'path';
+import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
+import { headerPaths } from './utils/paths.js';
 dotenv.config();
 app.use(bodyParser.json({ limit: '100mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
@@ -45,7 +46,6 @@ app.post('/api/WordsearchData', (req, res) => {
     const answers = wordsearch.placeWords();
     wordsearch.fillGrid();
     const finishedWordSearch = wordsearch.showGrid;
-    const headerPath = path.resolve('./views/partials/header.ejs');
     const wordSearchTemplate = readFileSync(join(viewsDirectory, 'wordsearch.ejs'), 'utf-8');
     const data = {
         authorName: escapedUserDetails[0],
@@ -58,10 +58,10 @@ app.post('/api/WordsearchData', (req, res) => {
     };
     const answersTemplate = readFileSync(join(viewsDirectory, 'answers.ejs'), 'utf-8');
     const htmlWordSearch = ejs.render(wordSearchTemplate, {
-        headerPath,
+        headerPaths,
         ...data,
     });
-    const htmlAnswerGrid = ejs.render(answersTemplate, { headerPath, ...data });
+    const htmlAnswerGrid = ejs.render(answersTemplate, { ...data });
     const wordSearchFileName = `${data.title}.html`;
     const answerSheetFileName = `${data.title}_answers.html`;
     try {
