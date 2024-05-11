@@ -1,11 +1,12 @@
 const PDFMerger = (await import('pdf-merger-js')).default;
-const merger = new PDFMerger();
+
 import { log } from 'console';
 import fs from 'fs';
 import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
 
 export const mergePDFS = async (pdfOne: string, pdfTwo: string) => {
+  const merger = new PDFMerger();
   try {
     const firstFile = path.resolve(pdfOne);
     const secondFile = path.resolve(pdfTwo);
