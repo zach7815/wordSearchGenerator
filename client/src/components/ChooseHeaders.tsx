@@ -44,7 +44,6 @@ export const Headers: React.FC = () => {
     <div>
       <div>
         <h3>Choose your header design</h3>
-        <div style={{ color: 'red' }}>{errors.authorName?.message} </div>
       </div>
       <div>
         <label>
@@ -61,6 +60,7 @@ export const Headers: React.FC = () => {
               }));
             }}
           />
+          <div style={{ color: 'red' }}>{errors.authorName?.message} </div>
         </label>
 
         <label>

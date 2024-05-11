@@ -8,7 +8,7 @@ export const mergePDFS = async (pdfOne, pdfTwo) => {
     try {
         const firstFile = path.resolve(pdfOne);
         const secondFile = path.resolve(pdfTwo);
-        const matchResult = pdfOne.match(/\/([^\/]+)$/);
+        const matchResult = RegExp(/\/([^/]+)$/).exec(pdfOne);
         const finalFileName = matchResult ? matchResult[1] : 'new File';
         const currentModulePath = fileURLToPath(import.meta.url);
         const currentDirectory = dirname(currentModulePath);

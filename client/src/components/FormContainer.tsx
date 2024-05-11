@@ -4,9 +4,14 @@ import { Headers } from './ChooseHeaders';
 import { DifficultiesAndWords } from './difficultiesAndWordsInput';
 import useAppContext from '../hooks/useContext';
 import { FormContainerProps } from '../../../Types';
+import { DynamicWordList } from './dynamicWordlist';
 
-export function FormContainer({ handleSave }: FormContainerProps) {
-  const steps = [<Headers />, <DifficultiesAndWords />];
+export function FormContainer({ handleSave }: Readonly<FormContainerProps>) {
+  const steps = [
+    <Headers key={1} />,
+    <DifficultiesAndWords key={2} />,
+    <DynamicWordList key={3} />,
+  ];
   const { userSubmission } = useAppContext();
 
   function onSubmit(e: FormEvent) {
@@ -21,15 +26,7 @@ export function FormContainer({ handleSave }: FormContainerProps) {
   const { currentStepIndex, step, isFirstStep, isLastStep, back, next } =
     useMultistepForm(steps);
   return (
-    <div
-      style={{
-        position: 'relative',
-        background: 'white',
-        padding: '2rem',
-        margin: '2rem',
-        fontFamily: 'Roboto',
-      }}
-    >
+    <div className="relative p-2 m-2 font-roboto bg-white">
       <form onSubmit={onSubmit}>
         {/* div to show current step in form */}
         <div
