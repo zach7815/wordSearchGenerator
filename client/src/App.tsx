@@ -23,14 +23,16 @@ function App() {
 
   return (
     <div className="App">
-      <div className="main-container">
-        <AppContext.Provider value={{  userSubmission, setUserSubmission }}>
-          <div className="form-container">
+      <div className="min-h-svh flex">
+        <AppContext.Provider value={{ userSubmission, setUserSubmission }}>
+          <div className="w-full flex items-center justify-center ">
             <FormContainer handleSave={handleSave} />
           </div>
         </AppContext.Provider>
 
-        <div className="example-container">Shows options for wordsearch</div>
+        <div className="w-full flex items-center bg-black text-white justify-center  p-0 m-0">
+          Shows options for wordsearch
+        </div>
       </div>
     </div>
   );

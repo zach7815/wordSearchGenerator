@@ -29,14 +29,11 @@ export function FormContainer({ handleSave }: Readonly<FormContainerProps>) {
     <div className="relative p-2 m-2 font-roboto bg-white">
       <form onSubmit={onSubmit}>
         {/* div to show current step in form */}
-        <div
-          className="form-outer-wrapper"
-          style={{ position: 'absolute', top: '0.5rem', right: '0.5rem' }}
-        >
+        <div className=" h-96 absolute top-0.5 right-0.5 ">
           {currentStepIndex + 1}/{steps.length}
         </div>
         {step}
-        <div className="form-inner-wrapper">
+        <div className="w-96">
           {!isFirstStep && (
             <button type="button" onClick={back}>
               Back

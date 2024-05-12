@@ -96,7 +96,7 @@ export const DifficultiesAndWords: React.FC = () => {
             shouldAnimate ? 'fade-slide-in-active' : ''
           }`}
         >
-          <div className="input-container">
+          <div className="grid grid-cols-2 gap-1">
             {/* Create columns */}
             {Array.from({ length: numColumns }, (_, columnIndex) => (
               <div key={columnIndex} style={{ flex: 1 }}>
