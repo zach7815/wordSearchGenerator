@@ -13,6 +13,7 @@ function App() {
     difficulty: '',
     words: [],
   });
+    const [wordLimit, setWordLimit] = useState<number>(0);
 
   function handleSave(submission: UserSubmission) {
     axios
@@ -24,7 +25,7 @@ function App() {
   return (
     <div className="App">
       <div className="min-h-svh flex">
-        <AppContext.Provider value={{ userSubmission, setUserSubmission }}>
+        <AppContext.Provider value={{ userSubmission, setUserSubmission, wordLimit, setWordLimit}}>
           <div className="w-full flex items-center justify-center ">
             <FormContainer handleSave={handleSave} />
           </div>

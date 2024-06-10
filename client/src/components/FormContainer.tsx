@@ -4,13 +4,13 @@ import { Headers } from './ChooseHeaders';
 import { DifficultiesAndWords } from './difficultiesAndWordsInput';
 import useAppContext from '../hooks/useContext';
 import { FormContainerProps } from '../../../Types';
-import { DynamicWordList } from './dynamicWordlist';
+import DynamicTest from './dynamicWordListTest.jsx';
 
 export function FormContainer({ handleSave }: Readonly<FormContainerProps>) {
   const steps = [
     <Headers key={1} />,
     <DifficultiesAndWords key={2} />,
-    <DynamicWordList key={3} />,
+    <DynamicTest key={3} />,
   ];
   const { userSubmission } = useAppContext();
 
@@ -35,12 +35,21 @@ export function FormContainer({ handleSave }: Readonly<FormContainerProps>) {
         {step}
         <div className="w-96">
           {!isFirstStep && (
-            <button type="button" onClick={back}>
+            <button
+              type="button"
+              className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l"
+              onClick={back}
+            >
               Back
             </button>
           )}
 
-          <button type="submit">{isLastStep ? 'Finish' : 'Next'}</button>
+          <button
+            className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-r"
+            type="submit"
+          >
+            {isLastStep ? 'Finish' : 'Next'}
+          </button>
         </div>
       </form>
     </div>

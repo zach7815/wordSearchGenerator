@@ -21,23 +21,18 @@ export const DifficultiesAndWords: React.FC = () => {
     resolver: zodResolver(schema),
   });
 
-  const { userSubmission, setUserSubmission } = useAppContext();
+  const { userSubmission, setUserSubmission, setWordLimit } = useAppContext();
 
   const [levelChoice, setLevelChoice] = useState<string>('');
   const [wordLimitMessage, setWordLimitMessage] = useState<string>('');
-  const [wordLimit, setWordLimit] = useState<number>(0);
-  const [shouldAnimate, setShouldAnimate] = useState<boolean>(false);
+
   const { field: Field } = useController({ name: 'header', control });
 
   const handleSelectChange = (option: Option | null, field: Field) => {
     if (option === null) return;
     field.onChange(option.value);
     setLevelChoice(option.value);
-    setShouldAnimate(true);
   };
-
-  const numColumns = Math.ceil(wordLimit / 5);
-  const numInputs = Math.min(wordLimit, 5);
 
   useEffect(() => {
     if (levelChoice === null) return;
@@ -90,38 +85,6 @@ export const DifficultiesAndWords: React.FC = () => {
           />
         </label>
         <div>{wordLimitMessage}</div>
-
-        <div
-          className={`fade-slide-in-animation ${
-            shouldAnimate ? 'fade-slide-in-active' : ''
-          }`}
-        >
-          <div className="grid grid-cols-2 gap-1">
-            {/* Create columns */}
-            {Array.from({ length: numColumns }, (_, columnIndex) => (
-              <div key={columnIndex} style={{ flex: 1 }}>
-                {/* Create inputs within each column */}
-                {Array.from({ length: numInputs }, (_, inputIndex) => {
-                  const uniqueIndex = columnIndex * numInputs + inputIndex;
-                  return (
-                    <input
-                      key={uniqueIndex}
-                      type="text"
-                      onChange={(e) => {
-                        const updatedWords = [...userSubmission.words];
-                        updatedWords[uniqueIndex] = e.target.value;
-                        setUserSubmission((prevState) => ({
-                          ...prevState,
-                          words: updatedWords,
-                        }));
-                      }}
-                    />
-                  );
-                })}
-              </div>
-            ))}
-          </div>
-        </div>
       </div>
     </div>
   );

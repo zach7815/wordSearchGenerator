@@ -3,7 +3,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* @layer base {
+@layer base {
   @font-face {
     font-family: 'Roboto';
     font-style: normal;
@@ -11,4 +11,4 @@
     font-display: swap;
     src: url(/fonts/Roboto.woff2) format('woff2');
   }
-} */
+}
