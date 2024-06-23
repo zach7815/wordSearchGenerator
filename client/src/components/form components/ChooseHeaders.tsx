@@ -2,8 +2,8 @@ import Select from 'react-select';
 import { useController, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { string, z } from 'zod';
-import { Option, Field } from '../../../Types/index.js';
-import useAppContext from '../hooks/useContext.js';
+import { Option, Field } from '../../../../Types/index.js';
+import useAppContext from '../../hooks/useContext.js';
 
 const headerOptions = [
   {

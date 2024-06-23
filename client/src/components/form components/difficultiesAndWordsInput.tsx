@@ -3,8 +3,8 @@ import Select from 'react-select';
 import { useController, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { string, z } from 'zod';
-import useAppContext from '../hooks/useContext.js';
-import { Option, Field } from '../../../Types/index.js';
+import useAppContext from '../../hooks/useContext.js';
+import { Option, Field } from '../../../../Types/index.js';
 const difficultyOptions = [
   { value: '10x10', label: '10x10' },
   { value: '15x15', label: '15x15' },
@@ -21,11 +21,10 @@ export const DifficultiesAndWords: React.FC = () => {
     resolver: zodResolver(schema),
   });
 
-  const { userSubmission, setUserSubmission, setWordLimit } = useAppContext();
+  const { setUserSubmission, setWordLimit, message, setMessage } =
+    useAppContext();
 
   const [levelChoice, setLevelChoice] = useState<string>('');
-  const [wordLimitMessage, setWordLimitMessage] = useState<string>('');
-
   const { field: Field } = useController({ name: 'header', control });
 
   const handleSelectChange = (option: Option | null, field: Field) => {
@@ -36,28 +35,30 @@ export const DifficultiesAndWords: React.FC = () => {
 
   useEffect(() => {
     if (levelChoice === null) return;
-    let message: string = '';
     switch (levelChoice) {
       case '10x10':
-        message =
-          'Maximum word amount is 15 words, max word length being 10 characters. ';
+        setMessage(
+          'Maximum word amount is 15 words, max word length being 10 characters. '
+        );
+
         setWordLimit(15);
         break;
 
       case '15x15':
-        message =
-          'Maximum word amount is 20 words, max word length being 10 characters.';
+        setMessage(
+          'Maximum word amount is 20 words, max word length being 10 characters.'
+        );
         setWordLimit(20);
         break;
 
       case '20x20':
-        message =
-          'Maximum word amount is 30 words, max word length being 10 characters.';
+        setMessage(
+          'Maximum word amount is 30 words, max word length being 10 characters.'
+        );
         setWordLimit(30);
         break;
     }
-    setWordLimitMessage(message);
-  }, [setLevelChoice, levelChoice]);
+  }, [setLevelChoice, levelChoice, setWordLimit, setMessage]);
 
   return (
     <div>
@@ -84,7 +85,7 @@ export const DifficultiesAndWords: React.FC = () => {
             options={difficultyOptions}
           />
         </label>
-        <div>{wordLimitMessage}</div>
+        <div>{message}</div>
       </div>
     </div>
   );

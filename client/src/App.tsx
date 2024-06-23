@@ -2,8 +2,9 @@ import { useState } from 'react';
 import axios from 'axios';
 import './App.css';
 import { UserSubmission } from '../../Types/index.ts';
-import { FormContainer } from './components/FormContainer.tsx';
+import { FormContainer } from './components/form components/FormContainer.tsx';
 import AppContext from './context/formContext.tsx';
+import ExampleWordsearchCarousel from './components/swiper.tsx';
 
 function App() {
   const [userSubmission, setUserSubmission] = useState<UserSubmission>({
@@ -13,7 +14,8 @@ function App() {
     difficulty: '',
     words: [],
   });
-    const [wordLimit, setWordLimit] = useState<number>(0);
+  const [wordLimit, setWordLimit] = useState<number>(0);
+  const [message, setMessage] = useState<string>('');
 
   function handleSave(submission: UserSubmission) {
     axios
@@ -25,14 +27,23 @@ function App() {
   return (
     <div className="App">
       <div className="min-h-svh flex">
-        <AppContext.Provider value={{ userSubmission, setUserSubmission, wordLimit, setWordLimit}}>
+        <AppContext.Provider
+          value={{
+            userSubmission,
+            setUserSubmission,
+            wordLimit,
+            setWordLimit,
+            message,
+            setMessage,
+          }}
+        >
           <div className="w-full flex items-center justify-center ">
             <FormContainer handleSave={handleSave} />
           </div>
         </AppContext.Provider>
 
-        <div className="w-full flex items-center bg-black text-white justify-center  p-0 m-0">
-          Shows options for wordsearch
+        <div className="w-full flex items-center bg-black text-white justify-center  p-0 m-0 overflow-auto">
+          <ExampleWordsearchCarousel />
         </div>
       </div>
     </div>

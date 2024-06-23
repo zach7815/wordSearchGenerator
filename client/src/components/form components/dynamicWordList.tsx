@@ -1,12 +1,19 @@
-import { useState } from 'react';
-import useAppContext from '../hooks/useContext.js';
+import { useEffect, useState } from 'react';
+import useAppContext from '../../hooks/useContext.js';
 
-const DynamicTest = () => {
+const DynamicWordList = () => {
   const [values, setValues] = useState(['']);
-  const { wordLimit } = useAppContext();
+  const { wordLimit, message, userSubmission, setUserSubmission } =
+    useAppContext();
+
+  useEffect(() => {
+    if (userSubmission && values !== userSubmission.words) {
+      setUserSubmission({ ...userSubmission, words: values });
+    }
+  }, [values, userSubmission, setUserSubmission]);
 
   const createUI = () => {
-    return values.map((el, i: number) => {
+    return values.map((_, i: number) => {
       return (
         <div key={i}>
           <input type="text" onInput={(event) => handleChange(i, event)} />
@@ -47,6 +54,11 @@ const DynamicTest = () => {
     setValues(updatedValues);
   };
 
-  return <>{createUI()}</>;
+  return (
+    <div>
+      <div className="message">{message}</div>
+      {createUI()}
+    </div>
+  );
 };
-export default DynamicTest;
+export default DynamicWordList;

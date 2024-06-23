@@ -1,10 +1,10 @@
 import { FormEvent } from 'react';
-import { useMultistepForm } from '../hooks/useMultipageForm';
+import { useMultistepForm } from '../../hooks/useMultipageForm.js';
 import { Headers } from './ChooseHeaders';
 import { DifficultiesAndWords } from './difficultiesAndWordsInput';
-import useAppContext from '../hooks/useContext';
-import { FormContainerProps } from '../../../Types';
-import DynamicTest from './dynamicWordListTest.jsx';
+import useAppContext from '../../hooks/useContext.js';
+import { FormContainerProps } from '../../../../Types/index.js';
+import DynamicTest from './dynamicWordList.js';
 
 export function FormContainer({ handleSave }: Readonly<FormContainerProps>) {
   const steps = [
