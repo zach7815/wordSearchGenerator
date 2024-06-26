@@ -9,16 +9,14 @@ import { Navigation } from 'swiper/modules';
 
 export default function ExampleWordsearchCarousel() {
   return (
-    <>
-      <Swiper navigation={true} modules={[Navigation]} className="mySwiper">
-        <SwiperSlide>
-          {' '}
-          <img src="../../ExampleWordsearch.png" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="../../exampleAnswers.png" />
-        </SwiperSlide>
-      </Swiper>
-    </>
+    <Swiper navigation={true} modules={[Navigation]} className="mySwiper">
+      <SwiperSlide className="flex justify-center">
+        {' '}
+        <img src="../../ExampleWordsearch.png" className="h-screen " />
+      </SwiperSlide>
+      <SwiperSlide className="flex justify-center">
+        <img className="h-screen " src="../../exampleAnswers.png" />
+      </SwiperSlide>
+    </Swiper>
   );
 }

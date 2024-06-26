@@ -16,9 +16,14 @@ const DynamicWordList = () => {
     return values.map((_, i: number) => {
       return (
         <div key={i}>
-          <input type="text" onInput={(event) => handleChange(i, event)} />
+          <input
+            type="text"
+            onInput={(event) => handleChange(i, event)}
+            className="border-solid border-2 border-black mt-2 h-10 min-w-[33.5rem]"
+          />
           {i > 0 && (
             <input
+              className="border-solid border-2 border-black ml-2 p-1.5 cursor-pointer min-w-[33.5rem]"
               type="button"
               value="remove"
               onClick={() => removeClick(i)}

@@ -37,12 +37,16 @@ function App() {
             setMessage,
           }}
         >
-          <div className="w-full flex items-center justify-center ">
-            <FormContainer handleSave={handleSave} />
+          <div className="w-full flex items-center  flex-col content-between justify-center">
+              <h1 className="text-2xl font-bold leading-7 sm:truncate sm:text-3xl sm:tracking-tight mb-2 mt-6 relative ">
+                Create your own wordsearch worksheet
+              </h1>
+              <FormContainer handleSave={handleSave} />
+
           </div>
         </AppContext.Provider>
 
-        <div className="w-full flex items-center bg-black text-white justify-center  p-0 m-0 overflow-auto">
+        <div className="w-full flex items-center  justify-center  p-0 m-0 overflow-auto">
           <ExampleWordsearchCarousel />
         </div>
       </div>

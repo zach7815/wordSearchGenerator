@@ -69,6 +69,7 @@ export const DifficultiesAndWords: React.FC = () => {
         <label>
           <p> Select your difficulty level</p>
           <Select
+            className="border-solid border-2 border-black min-w-[33.5rem]"
             required
             autoFocus
             value={difficultyOptions.find(({ value }) => value === Field.value)}
@@ -85,7 +86,13 @@ export const DifficultiesAndWords: React.FC = () => {
             options={difficultyOptions}
           />
         </label>
-        <div>{message}</div>
+        <div
+          className={`mt-4 overflow-hidden transition-all duration-500 ease-in-out ${
+            message ? 'opacity-100' : 'opacity-0'
+          }`}
+        >
+          <div className="min-h-[2rem]">{message}</div>
+        </div>
       </div>
     </div>
   );

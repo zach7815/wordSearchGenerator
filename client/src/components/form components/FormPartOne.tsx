@@ -1,9 +1,10 @@
-import Select from 'react-select';
+import Select, { StylesConfig } from 'react-select';
 import { useController, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { string, z } from 'zod';
 import { Option, Field } from '../../../../Types/index.js';
 import useAppContext from '../../hooks/useContext.js';
+import { DifficultiesAndWords } from './difficultiesAndWordsInput.js';
 
 const headerOptions = [
   {
@@ -40,15 +41,23 @@ export const Headers: React.FC = () => {
     field.onChange(option.value);
   };
 
+  const customStyles: StylesConfig = {
+    control: (base) => ({
+      ...base,
+      borderRadius: 0,
+      borderColor: '#000000',
+      border: 'solid 2px',
+    }),
+  };
+
   return (
     <div>
-      <div>
-        <h3>Choose your header design</h3>
-      </div>
+      <div></div>
       <div>
         <label>
           <p>Author</p>
           <input
+            className="border-solid border-2 border-black  w-full min-w-[33.5rem] h-10"
             type="text"
             required
             onChange={(event) => {
@@ -67,10 +76,10 @@ export const Headers: React.FC = () => {
           <p>Title</p>
           <input
             type="text"
+            className="border-solid border-2 border-black w-full min-w-[33.5rem]  h-10"
             required
             onChange={(event) => {
               const input = event.target.value;
-
               setUserSubmission((prevUserOptions) => ({
                 ...prevUserOptions,
                 title: input,
@@ -81,6 +90,9 @@ export const Headers: React.FC = () => {
         <label>
           <p>choose what your header will contain</p>
           <Select
+            // className="border-solid border-2 border-black"
+            styles={customStyles}
+            className="min-w-[33rem]"
             required
             value={
               headerOptions.find(
@@ -101,6 +113,7 @@ export const Headers: React.FC = () => {
           />
         </label>
       </div>
+      <DifficultiesAndWords />
     </div>
   );
 };

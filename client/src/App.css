@@ -3,8 +3,3 @@
   box-sizing: border-box;
   margin: 0;
 }
-
-input {
-  border: solid black 1px;
-  border-radius: 5px;
-}
