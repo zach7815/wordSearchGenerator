@@ -21,10 +21,10 @@ export function FormContainer({ handleSave }: Readonly<FormContainerProps>) {
   const { currentStepIndex, step, isFirstStep, isLastStep, back, next } =
     useMultistepForm(steps);
   return (
-    <div className="relative p-2 m-2 font-roboto bg-white min-w-[33rem]">
-      <form onSubmit={onSubmit}>
+    <div className="relative p-2 m-2 font-roboto bg-white min-w-[33rem] overflow-auto scrollable">
+      <form onSubmit={onSubmit} className="h-full overflow-hidden">
         {/* div to show current step in form */}
-        <div className=" h-96 absolute top-0.5 right-0.5 ">
+        <div className=" flex-1 overflow-auto flex justify-end ">
           {currentStepIndex + 1}/{steps.length}
         </div>
         {step}

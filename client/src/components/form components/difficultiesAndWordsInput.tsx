@@ -71,7 +71,6 @@ export const DifficultiesAndWords: React.FC = () => {
           <Select
             className="border-solid border-2 border-black min-w-[33.5rem]"
             required
-            autoFocus
             value={difficultyOptions.find(({ value }) => value === Field.value)}
             {...register('difficulty')}
             onChange={(option) => {

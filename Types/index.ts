@@ -19,3 +19,13 @@ type HandleSaveFunction = (data: UserSubmission) => void;
 export interface FormContainerProps {
   handleSave: HandleSaveFunction;
 }
+
+export interface WordSearchData {
+  authorName: string;
+  header: string;
+  title: string;
+  wordSearchData: string[][];
+  answers: (string | null)[][];
+  words: string[];
+  level: string;
+}

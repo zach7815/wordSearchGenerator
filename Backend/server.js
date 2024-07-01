@@ -11,7 +11,7 @@ import { readFileSync, writeFileSync } from 'fs';
 import { htmlToPDF } from './pdfCreation.js';
 import { mergePDFS } from './puppeteerFunctions/mergePDF.js';
 import { emptyDirectory } from './utils/emptyDirectories.js';
-import { dirname, join } from 'path';
+import path, { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 import { headerPaths } from './utils/paths.js';
 dotenv.config();
@@ -72,19 +72,34 @@ app.post('/api/WordsearchData', (req, res) => {
             await htmlToPDF(`./html-templates/${answerSheetFileName}`, title + 'answers');
         })()
             .then(async () => {
-            await mergePDFS(`./pdfOutput/${title}.pdf`, `./pdfOutput/${title}answers.pdf`);
+            const finalPDFPath = await mergePDFS(`./pdfOutput/${title}.pdf`, `./pdfOutput/${title}answers.pdf`);
+            return finalPDFPath;
         })
-            .then(() => {
+            .then((finalPDFPath) => {
             emptyDirectory('./html-templates');
             emptyDirectory('./pdfOutput');
+            if (finalPDFPath) {
+                const verifiedPath = path.resolve(finalPDFPath);
+                const pdf = readFileSync(verifiedPath);
+                const dataUrl = `data:application/pdf;base64,${pdf.toString('base64')}`;
+                res.status(200).json({
+                    data: {
+                        data: [data],
+                        dataURL: dataUrl,
+                    },
+                });
+            }
+            else {
+                console.error('finalPDFPath is undefined');
+            }
         });
     }
     catch (error) {
         console.log(error);
     }
     finally {
+        emptyDirectory('./finalPDF');
     }
-    res.send('hello');
 });
 const PORT = process.env.PORT ?? 3000;
 app.listen(PORT, () => {

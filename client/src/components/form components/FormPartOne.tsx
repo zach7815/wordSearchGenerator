@@ -59,6 +59,7 @@ export const Headers: React.FC = () => {
           <input
             className="border-solid border-2 border-black  w-full min-w-[33.5rem] h-10"
             type="text"
+            autoFocus
             required
             onChange={(event) => {
               const input = event.target.value;

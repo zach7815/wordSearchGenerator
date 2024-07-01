@@ -19,6 +19,7 @@ export const mergePDFS = async (pdfOne, pdfTwo) => {
             fs.mkdirSync(path.dirname(savePath), { recursive: true });
         }
         await merger.save(savePath);
+        return savePath;
     }
     catch (error) {
         log(error);

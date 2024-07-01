@@ -30,6 +30,7 @@ export const mergePDFS = async (pdfOne: string, pdfTwo: string) => {
     }
 
     await merger.save(savePath);
+    return savePath;
   } catch (error) {
     log(error);
   }
