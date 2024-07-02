@@ -1,21 +1,14 @@
-import Select, { StylesConfig } from 'react-select';
+import Select from 'react-select';
 import { useController, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { string, z } from 'zod';
 import { Option, Field } from '../../../../Types/index.js';
 import useAppContext from '../../hooks/useContext.js';
 import { DifficultiesAndWords } from './difficultiesAndWordsInput.js';
+import customStyles from '../../../utils/reactSelectStyles.js';
+import {headerOptions} from '../../../utils/reactOptions'
 
-const headerOptions = [
-  {
-    value: 'name, class, date and grade',
-    label: 'name, class, date and grade',
-  },
-  { value: 'name, class and date', label: 'name, class and date' },
-  { value: 'name and date', label: 'name and date' },
-  { value: 'name only', label: 'name only' },
-  { value: 'none', label: 'none' },
-];
+
 
 const schema = z.object({
   authorName: string().min(4),
@@ -41,14 +34,7 @@ export const Headers: React.FC = () => {
     field.onChange(option.value);
   };
 
-  const customStyles: StylesConfig = {
-    control: (base) => ({
-      ...base,
-      borderRadius: 0,
-      borderColor: '#000000',
-      border: 'solid 2px',
-    }),
-  };
+
 
   return (
     <div>
@@ -57,7 +43,7 @@ export const Headers: React.FC = () => {
         <label>
           <p>Author</p>
           <input
-            className="border-solid border-2 border-black  w-full min-w-[33.5rem] h-10"
+            className="border-solid border-2 border-black  w-full min-w-[33.5rem] h-10 focus:border-blue-700 `"
             type="text"
             autoFocus
             required
@@ -77,7 +63,7 @@ export const Headers: React.FC = () => {
           <p>Title</p>
           <input
             type="text"
-            className="border-solid border-2 border-black w-full min-w-[33.5rem]  h-10"
+            className="border-solid border-2 border-black w-full min-w-[33.5rem]  h-10 focus:border-blue-700"
             required
             onChange={(event) => {
               const input = event.target.value;
@@ -91,9 +77,8 @@ export const Headers: React.FC = () => {
         <label>
           <p>choose what your header will contain</p>
           <Select
-            // className="border-solid border-2 border-black"
             styles={customStyles}
-            className="min-w-[33rem]"
+            className="min-w-[33rem] focus:border-blue-700"
             required
             value={
               headerOptions.find(
@@ -103,7 +88,6 @@ export const Headers: React.FC = () => {
             onChange={(option) => {
               if (option) {
                 handleSelectChange(option, headerOpt);
-                console.log(option);
                 setUserSubmission((prevUserOptions) => ({
                   ...prevUserOptions,
                   header: option.value,

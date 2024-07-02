@@ -5,11 +5,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { string, z } from 'zod';
 import useAppContext from '../../hooks/useContext.js';
 import { Option, Field } from '../../../../Types/index.js';
-const difficultyOptions = [
-  { value: '10x10', label: '10x10' },
-  { value: '15x15', label: '15x15' },
-  { value: '20x20', label: '20x20' },
-];
+import { difficultyOptions } from '../../../utils/reactOptions';
+import customStyles from '../../../utils/reactSelectStyles';
 
 const schema = z.object({
   difficulty: string().min(4, { message: 'please select an option' }),
@@ -69,8 +66,9 @@ export const DifficultiesAndWords: React.FC = () => {
         <label>
           <p> Select your difficulty level</p>
           <Select
-            className="border-solid border-2 border-black min-w-[33.5rem]"
+            className=" min-w-[33.5rem] focus:border-none"
             required
+            styles={customStyles}
             value={difficultyOptions.find(({ value }) => value === Field.value)}
             {...register('difficulty')}
             onChange={(option) => {

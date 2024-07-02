@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import useAppContext from '../../hooks/useContext.js';
 
 const DynamicWordList = () => {
-  const [values, setValues] = useState(['']);
+  const [values, setValues] = useState<string[]>(['']);
   const { wordLimit, message, userSubmission, setUserSubmission } =
     useAppContext();
 
@@ -19,7 +19,7 @@ const DynamicWordList = () => {
           <input
             type="text"
             onInput={(event) => handleChange(i, event)}
-            className="border-solid border-2 border-black mt-2 h-10 min-w-[20.5rem] "
+            className=" relative  left-1 border-solid border-2 border-black mt-2 h-10 min-w-[20.5rem] focus:border-blue-700"
           />
           {i > 0 && (
             <input
@@ -76,7 +76,7 @@ const DynamicWordList = () => {
       {createUI()}
       {values.length !== wordLimit && (
         <input
-          className=" bg-gray-300 hover:bg-gray-400 ml-2 p-1.5 cursor-pointer rounded mt-2 relative right-2"
+          className=" bg-gray-300 hover:bg-gray-400 ml-2 p-1.5 cursor-pointer rounded mt-2 relative right-[0.35rem]"
           type="button"
           value="add words"
           onClick={() => addInputField()}
