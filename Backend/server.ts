@@ -9,7 +9,7 @@ const { escape } = pkg;
 import { Wordsearch } from './classes/wordsearch.class.js';
 import dotenv from 'dotenv';
 import { readFileSync, writeFileSync, readFile } from 'fs';
-import { htmlToPDF } from './pdfCreation.js';
+import { htmlToPDF } from './puppeteerFunctions/pdfCreation.js';
 
 import { mergePDFS } from './puppeteerFunctions/mergePDF.js';
 import { emptyDirectory } from './utils/emptyDirectories.js';

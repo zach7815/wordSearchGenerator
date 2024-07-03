@@ -40,7 +40,7 @@ export function FormContainer({ handleSave }: Readonly<FormContainerProps>) {
           )}
 
           <button
-            className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-r relative right-{0.1rem}"
+            className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-r relative right-[0.1rem]"
             type="submit"
           >
             {isLastStep ? 'Finish' : 'Next'}

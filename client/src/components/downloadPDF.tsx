@@ -27,12 +27,22 @@ const DownloadButton: React.FC<DownloadButtonProps> = ({
   }
 
   return (
-    <button
-      className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded h-fit w-fit"
-      onClick={downloadPDF}
-    >
-      Download Wordsearch
-    </button>
+    <div className="flex justify-between">
+      <button
+        className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded h-fit w-fit"
+        onClick={downloadPDF}
+      >
+        Download Wordsearch
+      </button>
+      <button
+        onClick={() => {
+          window.location.reload();
+        }}
+        className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded h-fit w-fit"
+      >
+        Create Another wordsearch
+      </button>
+    </div>
   );
 };
 

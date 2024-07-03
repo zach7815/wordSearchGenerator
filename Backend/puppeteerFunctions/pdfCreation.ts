@@ -2,7 +2,6 @@ import puppeteer from 'puppeteer';
 import { readFileSync, writeFileSync } from 'fs';
 
 export const htmlToPDF = async (htmlFile: string, title: string) => {
-  const regex = /New (.+?)\.html$/;
   const browser = await puppeteer.launch({
     headless: 'new',
     defaultViewport: null,
