@@ -12,10 +12,18 @@ export default function ExampleWordsearchCarousel() {
     <Swiper navigation={true} modules={[Navigation]} className="mySwiper">
       <SwiperSlide className="flex justify-center">
         {' '}
-        <img src="/Example-Wordsearch.jpg" className="h-screen " />
+        <img
+          alt="example wordsearch pdf sheet"
+          src="/Example-Wordsearch.jpg"
+          className="h-screen "
+        />
       </SwiperSlide>
       <SwiperSlide className="flex justify-center">
-        <img className="h-screen " src="/Example -Answers.jpg" />
+        <img
+          alt="example wordsearch answers pdf sheet"
+          className="h-screen "
+          src="/Example -Answers.jpg"
+        />
       </SwiperSlide>
     </Swiper>
   );
