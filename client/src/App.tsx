@@ -7,6 +7,7 @@ import AppContext from './context/formContext.tsx';
 import ExampleWordsearchCarousel from './components/swiper.tsx';
 import { WordSearchData } from '../../Types/index.ts';
 import DownloadButton from './components/downloadPDF.tsx';
+import LivePreview from './components/canvas.tsx';
 
 function App() {
   const [userSubmission, setUserSubmission] = useState<UserSubmission>({
@@ -86,8 +87,8 @@ function App() {
           </div>
         </AppContext.Provider>
 
-        <div className="w-full flex items-center  justify-center  p-0 m-0 overflow-auto">
-          <ExampleWordsearchCarousel />
+        <div className="w-full flex items-center  justify-center  p-0 m-0 overflow-auto exampleContainer">
+       {  downloadReady===false? <ExampleWordsearchCarousel />: <LivePreview wordsearchData={wordSearchData}/>}
         </div>
       </div>
     </div>
