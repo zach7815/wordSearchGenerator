@@ -1,16 +1,24 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import useAppContext from '../../hooks/useContext.js';
 
 const DynamicWordList = () => {
   const [values, setValues] = useState<string[]>(['']);
   const { wordLimit, message, userSubmission, setUserSubmission } =
     useAppContext();
+  const inputRefs = useRef<HTMLInputElement[]>([]);
 
   useEffect(() => {
     if (userSubmission && values !== userSubmission.words) {
       setUserSubmission({ ...userSubmission, words: values });
     }
   }, [values, userSubmission, setUserSubmission]);
+
+  useEffect(() => {
+    // Focus on the first input field when the component mounts
+    if (inputRefs.current[0]) {
+      inputRefs.current[0].focus();
+    }
+  }, []);
 
   const createUI = () => {
     return values.map((_, i: number) => {
@@ -20,6 +28,7 @@ const DynamicWordList = () => {
             type="text"
             onInput={(event) => handleChange(i, event)}
             className=" relative  left-1 border-solid border-2 border-black mt-2 h-10 min-w-[20.5rem] focus:border-blue-700"
+            ref={(el) => (inputRefs.current[i] = el)}
           />
           {i > 0 && (
             <input
@@ -52,6 +61,10 @@ const DynamicWordList = () => {
       values.length < wordLimit
     ) {
       setValues([...values, '']);
+      // Focus on the new input field
+      if (inputRefs.current[i + 1]) {
+        inputRefs.current[i + 1].focus();
+      }
     }
   };
 
@@ -59,6 +72,11 @@ const DynamicWordList = () => {
     const updatedValues = [...values];
     updatedValues.splice(i, 1);
     setValues(updatedValues);
+
+    // Focus on the next input field after removing the current one
+    if (inputRefs.current[i]) {
+      inputRefs.current[i].focus();
+    }
   };
 
   const addInputField = () => {
@@ -68,6 +86,11 @@ const DynamicWordList = () => {
     }
     updatedValues.push('');
     setValues(updatedValues);
+
+    // Focus on the new input field
+    if (inputRefs.current[updatedValues.length - 1]) {
+      inputRefs.current[updatedValues.length - 1].focus();
+    }
   };
 
   return (

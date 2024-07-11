@@ -8,7 +8,6 @@ import ExampleWordsearchCarousel from './components/swiper.tsx';
 import { WordSearchData } from '../../Types/index';
 import DownloadButton from './components/downloadPDF.tsx';
 
-
 function App() {
   const [userSubmission, setUserSubmission] = useState<UserSubmission>({
     authorName: '',
