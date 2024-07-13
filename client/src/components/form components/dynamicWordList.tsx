@@ -28,7 +28,11 @@ const DynamicWordList = () => {
             type="text"
             onInput={(event) => handleChange(i, event)}
             className=" relative  left-1 border-solid border-2 border-black mt-2 h-10 min-w-[20.5rem] focus:border-blue-700"
-            ref={(el) => (inputRefs.current[i] = el)}
+            ref={(el) => {
+              if (el !== null) {
+                inputRefs.current[i] = el;
+              }
+            }}
           />
           {i > 0 && (
             <input

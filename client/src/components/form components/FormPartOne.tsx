@@ -2,13 +2,11 @@ import Select from 'react-select';
 import { useController, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { string, z } from 'zod';
-import { Option, Field } from '../../../../Types/index.js';
+import { Option } from '../../../../Types/index.js';
 import useAppContext from '../../hooks/useContext.js';
 import { DifficultiesAndWords } from './difficultiesAndWordsInput.js';
 import customStyles from '../../../utils/reactSelectStyles.js';
-import {headerOptions} from '../../../utils/reactOptions'
-
-
+import { headerOptions } from '../../../utils/reactOptions';
 
 const schema = z.object({
   authorName: string().min(4),
@@ -27,14 +25,18 @@ export const Headers: React.FC = () => {
   });
 
   const { errors } = formState;
-  const { field: headerOpt } = useController({ name: 'header', control });
+  const { field: headerField } = useController({ name: 'header', control });
 
-  const handleSelectChange = (option: Option | null, field: Field) => {
+  const handleSelectChange = (newValue: unknown) => {
+    const option = newValue as Option | null;
     if (option === null) return;
-    field.onChange(option.value);
+    headerField.onChange(option.value);
+
+    setUserSubmission((prevUserOptions) => ({
+      ...prevUserOptions,
+      header: option.value,
+    }));
   };
-
-
 
   return (
     <div>
@@ -82,18 +84,10 @@ export const Headers: React.FC = () => {
             required
             value={
               headerOptions.find(
-                (option) => option.value === headerOpt.value
+                (option) => option.value === headerField.value
               ) || null
             }
-            onChange={(option) => {
-              if (option) {
-                handleSelectChange(option, headerOpt);
-                setUserSubmission((prevUserOptions) => ({
-                  ...prevUserOptions,
-                  header: option.value,
-                }));
-              } else return;
-            }}
+            onChange={handleSelectChange}
             options={headerOptions}
           />
         </label>

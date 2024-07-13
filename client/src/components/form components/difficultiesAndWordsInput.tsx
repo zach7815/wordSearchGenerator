@@ -4,7 +4,7 @@ import { useController, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { string, z } from 'zod';
 import useAppContext from '../../hooks/useContext.js';
-import { Option, Field } from '../../../../Types/index.js';
+import { Option } from '../../../../Types/index.js';
 import { difficultyOptions } from '../../../utils/reactOptions';
 import customStyles from '../../../utils/reactSelectStyles';
 
@@ -24,10 +24,15 @@ export const DifficultiesAndWords: React.FC = () => {
   const [levelChoice, setLevelChoice] = useState<string>('');
   const { field: Field } = useController({ name: 'header', control });
 
-  const handleSelectChange = (option: Option | null, field: Field) => {
+  const handleSelectChange = (newValue: unknown) => {
+    const option = newValue as Option | null;
     if (option === null) return;
-    field.onChange(option.value);
+    Field.onChange(option.value);
     setLevelChoice(option.value);
+    setUserSubmission((prevState) => ({
+      ...prevState,
+      difficulty: option.value,
+    }));
   };
 
   useEffect(() => {
@@ -71,15 +76,7 @@ export const DifficultiesAndWords: React.FC = () => {
             styles={customStyles}
             value={difficultyOptions.find(({ value }) => value === Field.value)}
             {...register('difficulty')}
-            onChange={(option) => {
-              if (option) {
-                handleSelectChange(option, Field);
-                setUserSubmission((prevState) => ({
-                  ...prevState,
-                  difficulty: option.value,
-                }));
-              }
-            }}
+            onChange={handleSelectChange}
             options={difficultyOptions}
           />
         </label>
