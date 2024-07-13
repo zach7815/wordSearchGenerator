@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import axios from 'axios';
 import './App.css';
 import { UserSubmission } from '../../Types/index.ts';
@@ -21,54 +21,63 @@ function App() {
   const [wordSearchData, setWordSearchData] = useState<WordSearchData[]>([]);
   const [downloadReady, setDownloadReady] = useState<boolean>(false);
   const [downloadURL, setDownloadURL] = useState<string>();
+  const contextValue = useMemo(() => {
+    return {
+      userSubmission,
+      setUserSubmission,
+      wordLimit,
+      setWordLimit,
+      message,
+      setMessage,
+    };
+  }, [
+    userSubmission,
+    setUserSubmission,
+    wordLimit,
+    setWordLimit,
+    message,
+    setMessage,
+  ]);
 
   function handleSave(submission: UserSubmission) {
-    axios
-      .post('http://localhost:8000/api/WordsearchData', { submission })
-      .then((response) => {
-        const { data } = response.data;
-        const { data: wordSearchData } = data;
+    try {
+      axios
+        .post('http://localhost:8000/api/WordsearchData', {
+          submission,
+        })
+        .then((response) => {
+          const { data } = response.data;
+          const { data: wordSearchData } = data;
 
-        const dataUrl = data.dataURL;
-        console.log(wordSearchData);
+          const dataUrl = data.dataURL;
 
-        // Create a Blob object from the data URL
-        const binaryData = atob(dataUrl.split(',')[1]);
-        const arrayBuffer = new ArrayBuffer(binaryData.length);
-        const uint8Array = new Uint8Array(arrayBuffer);
+          // Create a Blob object from the data URL
+          const binaryData = atob(dataUrl.split(',')[1]);
+          const arrayBuffer = new ArrayBuffer(binaryData.length);
+          const uint8Array = new Uint8Array(arrayBuffer);
 
-        for (let i = 0; i < binaryData.length; i++) {
-          uint8Array[i] = binaryData.charCodeAt(i);
-        }
-        setWordSearchData([
-          {
-            ...wordSearchData,
-          },
-        ]);
-        console.log('wordSearch Data just set', wordSearchData[0].title);
-        const file = new Blob([uint8Array], { type: 'application/pdf' });
-        const url = window.URL.createObjectURL(file);
-        setDownloadURL(url);
-        setDownloadReady(true);
-      })
-      .catch((error) => {
-        console.error('Error saving data:', error);
-      });
+          for (let i = 0; i < binaryData.length; i++) {
+            uint8Array[i] = binaryData.charCodeAt(i);
+          }
+          setWordSearchData([
+            {
+              ...wordSearchData,
+            },
+          ]);
+          const file = new Blob([uint8Array], { type: 'application/pdf' });
+          const url = window.URL.createObjectURL(file);
+          setDownloadURL(url);
+          setDownloadReady(true);
+        });
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
     <div className="App overflow-hidden h-screen">
       <div className="min-h-svh flex">
-        <AppContext.Provider
-          value={{
-            userSubmission,
-            setUserSubmission,
-            wordLimit,
-            setWordLimit,
-            message,
-            setMessage,
-          }}
-        >
+        <AppContext.Provider value={contextValue}>
           <div className="w-full flex items-center  flex-col content-between justify-center overflow-hidden">
             <div className="grid h-full overflow-hidden">
               <h1 className="text-2xl font-bold leading-7 sm:truncate sm:text-3xl sm:tracking-tight mb-2 mt-6 relative capitalize ">
