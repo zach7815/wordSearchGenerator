@@ -1,7 +1,7 @@
 import { FormEvent } from 'react';
 import { useMultistepForm } from '../../hooks/useMultipageForm.js';
 import { Headers } from './FormPartOne.js';
-import useAppContext from '../../hooks/useContext.js';
+import useAppContext from '../../context/useContext.js';
 import { FormContainerProps } from '../../../../Types/index.js';
 import DynamicTest from './dynamicWordList.js';
 

@@ -3,7 +3,7 @@ import Select from 'react-select';
 import { useController, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { string, z } from 'zod';
-import useAppContext from '../../hooks/useContext.js';
+import useAppContext from '../../context/useContext.js';
 import { Option } from '../../../../Types/index.js';
 import { difficultyOptions } from '../../../utils/reactOptions';
 import customStyles from '../../../utils/reactSelectStyles';

@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-import useAppContext from '../../hooks/useContext.js';
+import useAppContext from '../../context/useContext.js';
 
 const DynamicWordList = () => {
   const [values, setValues] = useState<string[]>(['']);

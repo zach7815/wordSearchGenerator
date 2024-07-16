@@ -3,7 +3,7 @@ import { useController, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { string, z } from 'zod';
 import { Option } from '../../../../Types/index.js';
-import useAppContext from '../../hooks/useContext.js';
+import useAppContext from '../../context/useContext.js';
 import { DifficultiesAndWords } from './difficultiesAndWordsInput.js';
 import customStyles from '../../../utils/reactSelectStyles.js';
 import { headerOptions } from '../../../utils/reactOptions';
