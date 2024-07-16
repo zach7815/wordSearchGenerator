@@ -1,5 +1,5 @@
-import { useContext } from "react";
-import AppContext, { AppContextType } from "../context/formContext";
+import { useContext } from 'react';
+import AppContext, { AppContextType } from './formContext';
 
 function useAppContext(): AppContextType {
   const context = useContext(AppContext);
@@ -8,4 +8,4 @@ function useAppContext(): AppContextType {
   }
   return context;
 }
-export default useAppContext
+export default useAppContext;
